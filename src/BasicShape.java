@@ -14,11 +14,6 @@ public abstract class BasicShape {
 		this.color = color;
 	}
 	
-	public void setPos(int xPos, int yPos){
-		x = xPos;
-		y = yPos;
-	}
-	
 	abstract void draw(PGraphics g);
 	
     boolean collidesWith(BasicShape s){
@@ -48,24 +43,21 @@ public abstract class BasicShape {
     }
     
     public void stopCollision(ArrayList<BasicShape> list){
-    	int xPos = x;
-		int yPos = y;
 		for(BasicShape s : list){
 			String collided = sideCollision(s);
 			if(collided.equals("LEFT")){
-				xPos = s.getX() - width;
+				x = s.getX() - width;
 			}
 			else if(collided.equals("RIGHT")){
-				xPos = s.getX2();
+				x = s.getX2();
 			}
 			else if(collided.equals("TOP")){
-				yPos = s.getY() - height;
+				y = s.getY() - height;
 			}
 			else if(collided.equals("BOTTOM")){
-				yPos = s.getY2();
+				y = s.getY2();
 			}	
 		}
-		setPos(xPos, yPos);
     }
 	
 	public int getX(){
@@ -96,5 +88,14 @@ public abstract class BasicShape {
 		return color;
 	}public void setColor(Color color){
 		this.color = color;
+	}
+	
+	public void setPos(int xPos, int yPos){
+		x = xPos;
+		y = yPos;
+	}public void setX(int xPos){
+		x = xPos;
+	}public void setY(int yPos){
+		y = yPos;
 	}
 }

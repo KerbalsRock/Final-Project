@@ -1,26 +1,27 @@
 import java.awt.Color;
 
 public abstract class MovingShape extends BasicShape{
-	private int xSpeed, ySpeed;
-	public MovingShape(int xPos, int yPos, int width, int height, int xSpeed, int ySpeed, Color color){
+	private double xSpeed, ySpeed;
+	public MovingShape(int xPos, int yPos, int width, int height, double xSpeed, double ySpeed, Color color){
 		super(xPos, yPos, width, height, color);
 		this.xSpeed = xSpeed;
 		this.ySpeed = ySpeed;
 	}
 	public void update(){
-		setPos(getX()+xSpeed, getY()+ySpeed);
+		setPos(getX()+(int)xSpeed, getY()+(int)ySpeed);
 	}
 	
-	public void setXSpeed(int xSpeed){
-		this.xSpeed = xSpeed;
+	
+	public void setXSpeed(double d){
+		this.xSpeed = d;
 	}
-	public void setYSpeed(int ySpeed){
+	public void setYSpeed(double ySpeed){
 		this.ySpeed = ySpeed;
 	}
-	public int getXSpeed(){
+	public double getXSpeed(){
 		return xSpeed;
 	}
-	public int getYSpeed(){
+	public double getYSpeed(){
 		return ySpeed;
 	}
 	

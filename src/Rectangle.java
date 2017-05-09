@@ -2,11 +2,11 @@ import processing.core.PGraphics;
 import java.awt.Color;
 
 public class Rectangle extends MovingShape {
-	public Rectangle(int xPos, int yPos, int width, int height, int xSpeed, int ySpeed, Color color){
+	public Rectangle(int xPos, int yPos, int width, int height, double xSpeed, double ySpeed, Color color){
 		super(xPos, yPos, width, height, xSpeed, ySpeed, color);
 	}
 	public Rectangle(int xPos, int yPos, int width, int height, Color color){
-		super(xPos, yPos, width, height,0,0, color);
+		super(xPos, yPos, width, height, 0, 0, color);
 	}
 	
 	void draw(PGraphics g){
