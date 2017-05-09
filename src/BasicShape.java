@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.util.ArrayList;
-
 import processing.core.PGraphics;
 
 public abstract class BasicShape {

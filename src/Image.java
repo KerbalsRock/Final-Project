@@ -25,6 +25,8 @@ public class Image extends MovingShape{
 
 	public PImage getImage(){
 		return image;
+	}public void setImage(PImage img){
+		image = img;
 	}
 	public void setScale(double xScale, double yScale){
 		this.xScale = xScale;

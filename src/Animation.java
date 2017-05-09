@@ -1,14 +1,13 @@
-import java.awt.Color;
 import java.util.ArrayList;
 import processing.core.PGraphics;
 
-public class Animation extends MovingShape{
+public class Animation extends Image{
 	private ArrayList<Image> list;
 	private int currentIndex, millisBetweenAnimation;
 	double xScale, yScale;
 	private long prevSwitch;
 	public Animation(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, int millisBetweenAnimation, ArrayList<Image>list) {
-		super(xPos, yPos, (int)(list.get(0).getWidth()*xScale), (int)(list.get(0).getHeight()*yScale), xSpeed, ySpeed, Color.white);
+		super(xPos, yPos, list.get(0).getXScale()*xScale, list.get(0).getYScale()*yScale, xSpeed, ySpeed, list.get(0).getImage());
 		this.list = list;
 		this.millisBetweenAnimation = millisBetweenAnimation;
 		this.xScale = xScale;
@@ -17,8 +16,8 @@ public class Animation extends MovingShape{
 		prevSwitch = System.currentTimeMillis();
 	}
 	
-	public Animation(int xPos, int yPos, double xScale, double yScale,int millisBetweenAnimation, ArrayList<Image>list){
-		super(xPos, yPos, (int)(list.get(0).getWidth()*xScale), (int)(list.get(0).getHeight()*yScale), 0, 0, Color.white);
+	public Animation(int xPos, int yPos, double xScale, double yScale, int millisBetweenAnimation, ArrayList<Image>list){
+		super(xPos, yPos, (int)(list.get(0).getWidth()*xScale), (int)(list.get(0).getHeight()*yScale), 0, 0, list.get(0).getImage());
 		this.list = list;
 		this.millisBetweenAnimation = millisBetweenAnimation;
 		this.xScale = xScale;
@@ -29,11 +28,7 @@ public class Animation extends MovingShape{
 	}
 	
 	public void draw(PGraphics g){
-		double tempXScale = list.get(currentIndex).getXScale();
-		double tempYScale = list.get(currentIndex).getYScale();
-		list.get(currentIndex).setScale(tempXScale*xScale, tempYScale*yScale);
-		list.get(currentIndex).draw(g);
-		list.get(currentIndex).setScale(tempXScale, tempYScale);
+		super.draw(g);
 	}
 	
 	public void goToNext(){
@@ -42,6 +37,7 @@ public class Animation extends MovingShape{
 		}else{
 			currentIndex = 0;
 		}
+		setImage(list.get(currentIndex).getImage());
 		prevSwitch = System.currentTimeMillis();
 		setWidth((int)(list.get(currentIndex).getWidth()*xScale));
 		setHeight((int)(list.get(currentIndex).getHeight()*yScale));
@@ -49,22 +45,17 @@ public class Animation extends MovingShape{
 	
 	public void update(){
 		super.update();
-		for(BasicShape b : list){
-			b.setPos(getX(),getY());
-		}
 		if(System.currentTimeMillis() - prevSwitch >= millisBetweenAnimation){
 			goToNext();
 		}
 	}
 	
-	public void stopCollision(ArrayList<BasicShape> colList){
-		super.stopCollision(colList);
-		for(BasicShape b : list){
-			b.setPos(getX(),getY());
-		}
-	}public ArrayList<Image> getList(){
+	public ArrayList<Image> getList(){
 		return list;
+	}public void setList(ArrayList<Image> list){
+		this.list = list;
 	}
+	
 	public void setScale(double xScale, double yScale){
 		this.xScale = xScale;
 		this.yScale = yScale;
@@ -86,6 +77,10 @@ public class Animation extends MovingShape{
 	
 	public double getYScale(){
 		return yScale;
+	}
+	
+	public int getMillisBetweenAnimation(){
+		return millisBetweenAnimation;
 	}
 	
 
