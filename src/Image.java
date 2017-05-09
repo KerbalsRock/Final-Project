@@ -18,6 +18,12 @@ public class Image extends MovingShape{
 		this.xScale = xScale;
 		this.yScale = yScale;
 	}
+	public Image(double xScale, double yScale, PImage image){
+		super(0, 0, (int)(image.width*xScale), (int)(image.height*yScale), 0, 0, Color.white);
+		this.image = image;
+		this.xScale = xScale;
+		this.yScale = yScale;
+	}
 	
 	public void draw(PGraphics g){
 		g.image(image,getX(),getY(),getWidth(),getHeight());

@@ -81,6 +81,8 @@ public class Animation extends Image{
 	
 	public int getMillisBetweenAnimation(){
 		return millisBetweenAnimation;
+	}public void setMillisBetweenAnimation(int millisBetweenAnimation){
+		this.millisBetweenAnimation = millisBetweenAnimation;
 	}
 	
 
