@@ -1,13 +1,12 @@
-import java.awt.Color;
 import java.util.ArrayList;
 import processing.core.PGraphics;
 
 public class Character extends Animation{
-	private ArrayList<Animation> list;
+	private ArrayList<Animation> animList;
 	int currentIndex;
 	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, ArrayList<Animation> list) {
 		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list.get(0).getMillisBetweenAnimation(), list.get(0).getList());
-		this.list = list;
+		animList = list;
 		currentIndex = 0;
 	}
 	
@@ -20,12 +19,11 @@ public class Character extends Animation{
 	}
 	
 	public void switchToAnimation(int index){
-		if(index!=currentIndex){
+		if(index!=currentIndex){		
 			currentIndex = index;
-			setList(list.get(index).getList());
-			setWidth((int)(list.get(index).getWidth()*getXScale()));
-			setHeight((int)(list.get(index).getHeight()*getYScale()));
-			setMillisBetweenAnimation(list.get(index).getMillisBetweenAnimation());
+			setList(animList.get(currentIndex).getList());
+			setWidth((int)(animList.get(currentIndex).getWidth()*getXScale()));
+			setHeight((int)(animList.get(currentIndex).getHeight()*getYScale()));
 		}
 	}
 

@@ -26,7 +26,7 @@ public class Image extends MovingShape{
 	}
 	
 	public void draw(PGraphics g){
-		g.image(image,getX(),getY(),getWidth(),getHeight());
+		g.image(image, getX(), getY(), getWidth(), getHeight());
 	}
 
 	public PImage getImage(){
