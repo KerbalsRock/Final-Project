@@ -43,7 +43,7 @@ public class Camera extends PApplet {
 		animationList2.add(new Image(1, 1, loadImage("Shrekcharacter3.jpg")));
 		shrekAnimations.add(new Animation(0,0,1,1,400,animationList));
 		shrekAnimations.add(new Animation(0,0,1,1,400,animationList2));
-		shrek = new Character(0,0, .2, .2, 0, 0, shrekAnimations);
+		shrek = new Character(0,0, .2, .2, 0, 0, .01 shrekAnimations);
 	}
 	public void draw(){
 		update();

@@ -14,7 +14,7 @@ public class Animation extends Image{
 	}
 	
 	public Animation(int xPos, int yPos, double xScale, double yScale, int millisBetweenAnimation, ArrayList<Image>list){
-		super(xPos, yPos, (int)(list.get(0).getWidth()*xScale), (int)(list.get(0).getHeight()*yScale), 0, 0, list.get(0).getImage());
+		super(xPos, yPos, (int)(list.get(0).getYScale()*xScale), (int)(list.get(0).getYScale()*yScale), 0, 0, list.get(0).getImage());
 		this.list = list;
 		this.millisBetweenAnimation = millisBetweenAnimation;
 		currentIndex = 0;
