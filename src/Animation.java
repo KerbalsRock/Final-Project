@@ -37,12 +37,16 @@ public class Animation extends Image{
 		setWidth((int)(list.get(currentIndex).getWidth()*getXScale()));
 		setHeight((int)(list.get(currentIndex).getHeight()*getYScale()));
 	}
-	
-	public void update(){
-		super.update();
+	protected void autoToNext(){
 		if(System.currentTimeMillis() - prevSwitch >= millisBetweenAnimation){
 			goToNext();
 		}
+	}
+	
+	
+	public void update(){
+		super.update();
+		autoToNext();
 	}
 	
 	public ArrayList<Image> getList(){
@@ -76,6 +80,10 @@ public class Animation extends Image{
 		return millisBetweenAnimation;
 	}public void setMillisBetweenAnimation(int millisBetweenAnimation){
 		this.millisBetweenAnimation = millisBetweenAnimation;
+	}
+	
+	public int getCurrentIndex(){
+		return currentIndex;
 	}
 	
 	

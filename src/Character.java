@@ -3,13 +3,16 @@ import processing.core.PGraphics;
 
 public class Character extends Animation{
 	private ArrayList<Animation> animList;
+	ArrayList<BasicShape> obstacleList;
 	int currentIndex;
 	double pseudoY, gravity;
-	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, double gravity, ArrayList<Animation> list) {
+	
+	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, double gravity, ArrayList<Animation> list, ArrayList<BasicShape> obstacles) {
 		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list.get(0).getMillisBetweenAnimation(), list.get(0).getList());
 		this.gravity = gravity;
 		animList = list;
 		currentIndex = 0;
+		obstacleList = obstacles;
 	}
 	
 	public void draw(PGraphics g){
@@ -17,12 +20,62 @@ public class Character extends Animation{
 	}
 	
 	public void update(){
+		autoToNext();
+		boolean updateX = true;
+		boolean updateY = true;
 		setYSpeed(getYSpeed()+gravity);
-		pseudoY+=getYSpeed();
-		setPos((int)(getX()+getXSpeed()), (int)(pseudoY));
-		setWidth((int)(animList.get(currentIndex).getWidth()*getXScale()));
-		setHeight((int)(animList.get(currentIndex).getHeight()*getYScale()));
+		for(BasicShape s : obstacleList){
+			String collided = sideCollision(s);
+			if(collided.equals("LEFT")){
+				setX(s.getX() - getWidth());
+				if(getXSpeed() >= 0){
+					updateX = false;
+				}
+			}
+			else if(collided.equals("RIGHT")){
+				setX(s.getX2());
+				if(getXSpeed() <= 0){
+					updateX = false;
+				}
+			}
+			else if(collided.equals("TOP")){
+				setY(s.getY() - getHeight());
+				if(getYSpeed() >= 0){
+					updateY = false;
+				}
+			}
+			else if(collided.equals("BOTTOM")){
+				setY(s.getY2());
+				if(getYSpeed() <= 0){
+					updateY = false;
+				}
+			}	
+		}
+		if(updateY){
+			pseudoY+=getYSpeed();
+			setY((int)pseudoY);
+		}else{
+			setYSpeed(0);
+		}
+		if(updateX){
+			setX((int)(getX()+getXSpeed()));
+		}
 	}
+	
+	public void jump(double jumpSpeed){
+		/*if(getYSpeed() > 0){
+			setYSpeed(0);
+		}
+		setYSpeed(getYSpeed() + jumpSpeed);*/
+		setYSpeed(jumpSpeed);
+	}
+	
+	public void goToNext(){
+		super.goToNext();
+		setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));
+		setHeight((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getHeight()*animList.get(currentIndex).getYScale()*getYScale()));
+		}
+		
 	
 	public void switchToAnimation(int index){
 		if(index!=currentIndex){		
@@ -32,23 +85,5 @@ public class Character extends Animation{
 		}
 	}
 	
-	public void stopCollision(ArrayList<BasicShape> list){
-		for(BasicShape s : list){
-			String collided = sideCollision(s);
-			if(collided.equals("LEFT")){
-				setX(s.getX() - getWidth());
-			}
-			else if(collided.equals("RIGHT")){
-				setX(s.getX2());
-			}
-			else if(collided.equals("TOP")){
-				setYSpeed(0);
-				setY(s.getY() - getHeight());
-			}
-			else if(collided.equals("BOTTOM")){
-				setY(s.getY2());
-			}	
-		}
-    }
 
 }

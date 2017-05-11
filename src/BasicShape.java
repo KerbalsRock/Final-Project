@@ -18,7 +18,7 @@ public abstract class BasicShape {
     boolean collidesWith(BasicShape s){
 		return (x <= s.getX2()&& x + width >= s.getX()&&
 				y <= s.getY2()&& y + height >= s.getY())&&
-				!((x==s.getX2() || x + width == s.getX())&&(y==s.getY2()||y+width == s.getY()));//corners
+				!((x==s.getX2() || x + width == s.getX())&&(y==s.getY2()||y+height == s.getY()));//corners
 	}
     
     public String sideCollision(BasicShape s){
