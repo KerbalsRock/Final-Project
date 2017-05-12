@@ -6,13 +6,16 @@ public class Character extends Animation{
 	ArrayList<BasicShape> obstacleList;
 	int currentIndex;
 	double pseudoY, gravity;
+	boolean canJump;
 	
 	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, double gravity, ArrayList<Animation> list, ArrayList<BasicShape> obstacles) {
 		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list.get(0).getMillisBetweenAnimation(), list.get(0).getList());
 		this.gravity = gravity;
 		animList = list;
+		pseudoY = yPos;
 		currentIndex = 0;
 		obstacleList = obstacles;
+		canJump = false;
 	}
 	
 	public void draw(PGraphics g){
@@ -21,8 +24,16 @@ public class Character extends Animation{
 	
 	public void update(){
 		autoToNext();
-		boolean updateX = true;
+		pseudoY+=getYSpeed();
+		setY((int)pseudoY);
+		setX((int)(getX()+getXSpeed()));
+	}
+	
+	public void scrollerUpdate(ArrayList<BasicShape> list){
+		autoToNext();
 		boolean updateY = true;
+		boolean updateX = true;
+		canJump = false;
 		setYSpeed(getYSpeed()+gravity);
 		for(BasicShape s : obstacleList){
 			String collided = sideCollision(s);
@@ -39,6 +50,7 @@ public class Character extends Animation{
 				}
 			}
 			else if(collided.equals("TOP")){
+				canJump = true;
 				setY(s.getY() - getHeight());
 				if(getYSpeed() >= 0){
 					updateY = false;
@@ -58,16 +70,19 @@ public class Character extends Animation{
 			setYSpeed(0);
 		}
 		if(updateX){
-			setX((int)(getX()+getXSpeed()));
+			for(BasicShape s : list){
+				s.setX((int)(s.getX() - getXSpeed()));
+			}
 		}
 	}
 	
 	public void jump(double jumpSpeed){
-		/*if(getYSpeed() > 0){
-			setYSpeed(0);
+		if(canJump){
+			if(getYSpeed() > 0){
+				setYSpeed(0);
+			}
+			setYSpeed(getYSpeed() + jumpSpeed);
 		}
-		setYSpeed(getYSpeed() + jumpSpeed);*/
-		setYSpeed(jumpSpeed);
 	}
 	
 	public void goToNext(){
