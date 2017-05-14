@@ -105,7 +105,7 @@ public class Character extends Animation{
 			if(getYSpeed() > 0){
 				setYSpeed(0);
 			}
-			setYSpeed(getYSpeed() + jumpSpeed);
+			setYSpeed(jumpSpeed);
 		}
 	}
 	
@@ -116,7 +116,7 @@ public class Character extends Animation{
 		}
 		
 	
-	public void switchToAnimation(int index){
+	public void setAnimation(int index){
 		if(index!=currentIndex){		
 			currentIndex = index;
 			setList(animList.get(currentIndex).getList());

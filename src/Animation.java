@@ -36,6 +36,7 @@ public class Animation extends Image{
 		prevSwitch = System.currentTimeMillis();
 		setWidth((int)(list.get(currentIndex).getWidth()*getXScale()));
 		setHeight((int)(list.get(currentIndex).getHeight()*getYScale()));
+		
 	}
 	protected void autoToNext(){
 		if(System.currentTimeMillis() - prevSwitch >= millisBetweenAnimation){

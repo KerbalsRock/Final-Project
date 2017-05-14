@@ -54,6 +54,9 @@ public abstract class BasicShape {
     				bottomlessCanCollide = false;
     				return "BOTTOM";
     			}else if (y + tolerance  == s.getY() + s.getHeight()){
+    				if(tolerance==0){
+    					bottomlessCanCollide = true;
+    				}
     				return "TOP";
     			}else if(x + width - tolerance == s.getX()){
     				if(bottomlessCanCollide){
