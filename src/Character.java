@@ -3,7 +3,6 @@ import processing.core.PGraphics;
 
 public class Character extends Animation{
 	private ArrayList<Animation> animList;
-	ArrayList<BasicShape> obstacleList;
 	int currentIndex;
 	double pseudoY, gravity;
 	boolean canJump;
@@ -14,8 +13,9 @@ public class Character extends Animation{
 		animList = list;
 		pseudoY = yPos;
 		currentIndex = 0;
-		obstacleList = obstacles;
 		canJump = false;
+		setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));
+		setHeight((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getHeight()*animList.get(currentIndex).getYScale()*getYScale()));
 	}
 	
 	public void draw(PGraphics g){
@@ -29,14 +29,14 @@ public class Character extends Animation{
 		setX((int)(getX()+getXSpeed()));
 	}
 	
-	public void scrollerUpdate(ArrayList<BasicShape> list){
+	public void scrollerUpdate(ArrayList<BasicShape> allGameObjects, ArrayList<BasicShape> solidObstacles, ArrayList<BasicShape> bottomlessObstacles){
 		autoToNext();
 		boolean updateY = true;
 		boolean updateX = true;
 		canJump = false;
 		setYSpeed(getYSpeed()+gravity);
-		for(BasicShape s : obstacleList){
-			String collided = sideCollision(s);
+		for(BasicShape s : solidObstacles){
+			String collided = s.sideCollision(this);
 			if(collided.equals("LEFT")){
 				setX(s.getX() - getWidth());
 				if(getXSpeed() >= 0){
@@ -63,6 +63,30 @@ public class Character extends Animation{
 				}
 			}	
 		}
+		for(BasicShape s : bottomlessObstacles){ 
+			String collided = s.bottomlessSideCollision(this);
+			if(collided.equals("LEFT")){
+				setX(s.getX() - getWidth());
+				if(getXSpeed() >= 0){
+					updateX = false;
+				}
+			}
+			else if(collided.equals("RIGHT")){
+				setX(s.getX2());
+				if(getXSpeed() <= 0){
+					updateX = false;
+				}
+			}
+			else if(collided.equals("TOP")){
+				if(s.getBottomlessCanCollide()){
+					canJump = true;
+					setY(s.getY() - getHeight());
+					if(getYSpeed() >= 0){
+						updateY = false;
+					}
+				}
+			}	
+		}
 		if(updateY){
 			pseudoY+=getYSpeed();
 			setY((int)pseudoY);
@@ -70,7 +94,7 @@ public class Character extends Animation{
 			setYSpeed(0);
 		}
 		if(updateX){
-			for(BasicShape s : list){
+			for(BasicShape s : allGameObjects){
 				s.setX((int)(s.getX() - getXSpeed()));
 			}
 		}
@@ -97,6 +121,8 @@ public class Character extends Animation{
 			currentIndex = index;
 			setList(animList.get(currentIndex).getList());
 			setMillisBetweenAnimation(animList.get(currentIndex).getMillisBetweenAnimation());
+			setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));
+			setHeight((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getHeight()*animList.get(currentIndex).getYScale()*getYScale()));
 		}
 	}
 	

@@ -5,12 +5,14 @@ import processing.core.PGraphics;
 public abstract class BasicShape {
 	private int x, y, width, height;
 	private Color color;
+	private boolean bottomlessCanCollide;
 	public BasicShape(int xPos, int yPos, int width, int height, Color color){
 		x = xPos;
 		y = yPos;
 		this.width = width;
 		this.height = height;
 		this.color = color;
+		bottomlessCanCollide = false;
 	}
 	
 	abstract void draw(PGraphics g);
@@ -28,13 +30,43 @@ public abstract class BasicShape {
     		int tolerance = 0;
     		while (true){
     			if(y + height - tolerance == s.getY()){
-    				return "TOP";
-    			}else if (y + tolerance  == s.getY() + s.getHeight()){
     				return "BOTTOM";
+    			}else if (y + tolerance  == s.getY() + s.getHeight()){
+    				return "TOP";
     			}else if(x + width - tolerance == s.getX()){
-    				return "LEFT";
-    			}else if (x + tolerance == s.getX() + s.getWidth() ){
     				return "RIGHT";
+    			}else if (x + tolerance == s.getX() + s.getWidth() ){
+    				return "LEFT";
+    			}
+    			tolerance++;
+    		}
+    	}
+    }
+    
+    public String bottomlessSideCollision(BasicShape s){
+    	if(!collidesWith(s)){
+    		bottomlessCanCollide = true;
+    		return "NONE";
+    	}else{
+    		int tolerance = 0;
+    		while (true){
+    			if(y + height - tolerance == s.getY()){
+    				bottomlessCanCollide = false;
+    				return "BOTTOM";
+    			}else if (y + tolerance  == s.getY() + s.getHeight()){
+    				return "TOP";
+    			}else if(x + width - tolerance == s.getX()){
+    				if(bottomlessCanCollide){
+    					return "RIGHT";
+    				}else{
+    					return "BOTTOM";
+    				}
+    			}else if (x + tolerance == s.getX() + s.getWidth() ){
+    				if(bottomlessCanCollide){
+    					return "LEFT";
+    				}else{
+    					return "BOTTOM";
+    				}
     			}
     			tolerance++;
     		}
@@ -43,7 +75,7 @@ public abstract class BasicShape {
     
     public void stopCollision(ArrayList<BasicShape> list){
 		for(BasicShape s : list){
-			String collided = sideCollision(s);
+			String collided = s.sideCollision(this);
 			if(collided.equals("LEFT")){
 				x = s.getX() - width;
 			}
@@ -96,5 +128,9 @@ public abstract class BasicShape {
 		x = xPos;
 	}public void setY(int yPos){
 		y = yPos;
+	}
+	
+	public boolean getBottomlessCanCollide(){
+		return bottomlessCanCollide;
 	}
 }
