@@ -52,12 +52,14 @@ public class Character extends Animation{
 			else if(collided.equals("TOP")){
 				canJump = true;
 				setY(s.getY() - getHeight());
+				pseudoY = getY();
 				if(getYSpeed() >= 0){
 					updateY = false;
 				}
 			}
 			else if(collided.equals("BOTTOM")){
 				setY(s.getY2());
+				pseudoY = getY();
 				if(getYSpeed() <= 0){
 					updateY = false;
 				}
@@ -81,6 +83,7 @@ public class Character extends Animation{
 				if(s.getBottomlessCanCollide()){
 					canJump = true;
 					setY(s.getY() - getHeight());
+					pseudoY = getY();
 					if(getYSpeed() >= 0){
 						updateY = false;
 					}
@@ -110,10 +113,12 @@ public class Character extends Animation{
 	}
 	
 	public void goToNext(){
+		int prevHeight = getHeight();
 		super.goToNext();
 		setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));
 		setHeight((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getHeight()*animList.get(currentIndex).getYScale()*getYScale()));
-		}
+		setY(getY() + (prevHeight - getHeight()));
+	}
 		
 	
 	public void setAnimation(int index){

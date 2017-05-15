@@ -54,10 +54,13 @@ public class Camera extends PApplet {
 	private void update(){
 		if(a){
 			shrek.setXSpeed(-3);
+			shrek.setAnimation(1);
 		}else if(d){
 			shrek.setXSpeed(3);
+			shrek.setAnimation(1);
 		}else{
 			shrek.setXSpeed(0);
+			shrek.setAnimation(0);
 		}
 		if(space){
 			shrek.jump(-8);
