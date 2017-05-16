@@ -5,8 +5,8 @@ public class ScrollingCharacter extends Character{
 	boolean canJump;
 	boolean canClimb;
 	public ScrollingCharacter(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed,
-			double gravity, ArrayList<Animation> list, ArrayList<BasicShape> obstacles) {
-		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list, obstacles);
+			double gravity, ArrayList<Animation> list, String tag) {
+		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list, tag);
 		this.gravity = gravity;
 		pseudoY = yPos;
 		canJump = false;
@@ -21,58 +21,28 @@ public class ScrollingCharacter extends Character{
 		setX((int)(getX()+getXSpeed()));
 	}
 	
-	public void scrollerUpdate(ArrayList<BasicShape> allGameObjects, ArrayList<BasicShape> solidObstacles, ArrayList<BasicShape> bottomlessObstacles, ArrayList<BasicShape> ladderList){
+	public void scrollerUpdate(ArrayList<BasicShape> allObjects){
 		autoToNext();
 		boolean updateY = true;
 		boolean updateX = true;
 		canJump = false;
 		canClimb = false;
-		for(BasicShape s : solidObstacles){
-			String collided = s.sideCollision(this);
-			if(collided.equals("LEFT")){
-				setX(s.getX() - getWidth());
-				if(getXSpeed() >= 0){
-					updateX = false;
+		for(BasicShape s : allObjects){
+			if(s.getTag().equals("WALL")){
+				String collided = s.sideCollision(this);
+				if(collided.equals("LEFT")){
+					setX(s.getX() - getWidth());
+					if(getXSpeed() >= 0){
+						updateX = false;
+					}
 				}
-			}
-			else if(collided.equals("RIGHT")){
-				setX(s.getX2());
-				if(getXSpeed() <= 0){
-					updateX = false;
+				else if(collided.equals("RIGHT")){
+					setX(s.getX2());
+					if(getXSpeed() <= 0){
+						updateX = false;
+					}
 				}
-			}
-			else if(collided.equals("TOP")){
-				canJump = true;
-				setY(s.getY() - getHeight());
-				pseudoY = getY();
-				if(getYSpeed() >= 0){
-					updateY = false;
-				}
-			}
-			else if(collided.equals("BOTTOM")){
-				setY(s.getY2());
-				pseudoY = getY();
-				if(getYSpeed() <= 0){
-					updateY = false;
-				}
-			}	
-		}
-		for(BasicShape s : bottomlessObstacles){ 
-			String collided = s.bottomlessSideCollision(this);
-			if(collided.equals("LEFT")){
-				setX(s.getX() - getWidth());
-				if(getXSpeed() >= 0){
-					updateX = false;
-				}
-			}
-			else if(collided.equals("RIGHT")){
-				setX(s.getX2());
-				if(getXSpeed() <= 0){
-					updateX = false;
-				}
-			}
-			else if(collided.equals("TOP")){
-				if(s.getBottomlessCanCollide()){
+				else if(collided.equals("TOP")){
 					canJump = true;
 					setY(s.getY() - getHeight());
 					pseudoY = getY();
@@ -80,11 +50,43 @@ public class ScrollingCharacter extends Character{
 						updateY = false;
 					}
 				}
-			}	 
-		}
-		for(BasicShape b : ladderList){
-			if(collidesWith(b)){
-				canClimb = true;
+				else if(collided.equals("BOTTOM")){
+					setY(s.getY2());
+					pseudoY = getY();
+					if(getYSpeed() <= 0){
+						updateY = false;
+					}
+				}	
+			}
+			else if(s.getTag().equals("BOTTOMLESS")){ 
+				String collided = s.bottomlessSideCollision(this);
+				if(collided.equals("LEFT")){
+					setX(s.getX() - getWidth());
+					if(getXSpeed() >= 0){
+						updateX = false;
+					}
+				}
+				else if(collided.equals("RIGHT")){
+					setX(s.getX2());
+					if(getXSpeed() <= 0){
+						updateX = false;
+					}
+				}
+				else if(collided.equals("TOP")){
+					if(s.getBottomlessCanCollide()){
+						canJump = true;
+						setY(s.getY() - getHeight());
+						pseudoY = getY();
+						if(getYSpeed() >= 0){
+							updateY = false;
+						}
+					}
+				}	 
+			}
+			else if(s.getTag().equals("LADDER")){
+				if(collidesWith(s)){
+					canClimb = true;
+				}
 			}
 		}
 		if(updateY){
@@ -98,7 +100,7 @@ public class ScrollingCharacter extends Character{
 		}
 		
 		if(updateX){
-			for(BasicShape s : allGameObjects){
+			for(BasicShape s : allObjects){
 				s.setX((int)(s.getX() - getXSpeed()));
 			}
 		}

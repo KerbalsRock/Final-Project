@@ -5,16 +5,16 @@ public class Animation extends Image{
 	private ArrayList<Image> list;
 	private int currentIndex, millisBetweenAnimation;
 	private long prevSwitch;
-	public Animation(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, int millisBetweenAnimation, ArrayList<Image>list) {
-		super(xPos, yPos, list.get(0).getXScale()*xScale, list.get(0).getYScale()*yScale, xSpeed, ySpeed, list.get(0).getImage());
+	public Animation(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, int millisBetweenAnimation, ArrayList<Image>list, String tag) {
+		super(xPos, yPos, list.get(0).getXScale()*xScale, list.get(0).getYScale()*yScale, xSpeed, ySpeed, list.get(0).getImage(), tag);
 		this.list = list;
 		this.millisBetweenAnimation = millisBetweenAnimation;
 		currentIndex = 0;
 		prevSwitch = System.currentTimeMillis();
 	}
 	
-	public Animation(int xPos, int yPos, double xScale, double yScale, int millisBetweenAnimation, ArrayList<Image>list){
-		super(xPos, yPos, (int)(list.get(0).getYScale()*xScale), (int)(list.get(0).getYScale()*yScale), 0, 0, list.get(0).getImage());
+	public Animation(int xPos, int yPos, double xScale, double yScale, int millisBetweenAnimation, ArrayList<Image>list, String tag){
+		super(xPos, yPos, (int)(list.get(0).getYScale()*xScale), (int)(list.get(0).getYScale()*yScale), 0, 0, list.get(0).getImage(), tag);
 		this.list = list;
 		this.millisBetweenAnimation = millisBetweenAnimation;
 		currentIndex = 0;

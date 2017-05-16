@@ -6,8 +6,8 @@ public class Character extends Animation{
 	int currentIndex;
 
 	
-	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, ArrayList<Animation> list, ArrayList<BasicShape> obstacles) {
-		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list.get(0).getMillisBetweenAnimation(), list.get(0).getList());
+	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, ArrayList<Animation> list, String tag) {
+		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list.get(0).getMillisBetweenAnimation(), list.get(0).getList(), tag);
 		animList = list;
 		currentIndex = 0;
 		setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));

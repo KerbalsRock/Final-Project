@@ -5,14 +5,16 @@ import processing.core.PGraphics;
 public abstract class BasicShape {
 	private int x, y, width, height;
 	private Color color;
+	private String tag;
 	private boolean bottomlessCanCollide;
-	public BasicShape(int xPos, int yPos, int width, int height, Color color){
+	public BasicShape(int xPos, int yPos, int width, int height, Color color, String tag){
 		x = xPos;
 		y = yPos;
 		this.width = width;
 		this.height = height;
 		this.color = color;
 		bottomlessCanCollide = false;
+		this.tag = tag;
 	}
 	
 	abstract void draw(PGraphics g);
@@ -131,6 +133,12 @@ public abstract class BasicShape {
 		x = xPos;
 	}public void setY(int yPos){
 		y = yPos;
+	}
+	
+	public void setTag(String tag){
+		this.tag = tag;
+	}public String getTag(){
+		return tag;
 	}
 	
 	public boolean getBottomlessCanCollide(){

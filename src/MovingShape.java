@@ -2,8 +2,8 @@ import java.awt.Color;
 
 public abstract class MovingShape extends BasicShape{
 	private double xSpeed, ySpeed;
-	public MovingShape(int xPos, int yPos, int width, int height, double xSpeed, double ySpeed, Color color){
-		super(xPos, yPos, width, height, color);
+	public MovingShape(int xPos, int yPos, int width, int height, double xSpeed, double ySpeed, Color color, String tag){
+		super(xPos, yPos, width, height, color, tag);
 		this.xSpeed = xSpeed;
 		this.ySpeed = ySpeed;
 	}

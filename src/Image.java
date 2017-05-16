@@ -6,20 +6,20 @@ public class Image extends MovingShape{
 	private PImage image;
 	private double xScale;
 	private double yScale;
-	public Image(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, PImage image){
-		super(xPos, yPos, (int)(image.width*xScale), (int)(image.height*yScale), xSpeed, ySpeed, Color.white);
+	public Image(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, PImage image, String tag){
+		super(xPos, yPos, (int)(image.width*xScale), (int)(image.height*yScale), xSpeed, ySpeed, Color.white, tag);
 		this.image = image;
 		this.xScale = xScale;
 		this.yScale = yScale;
 	}
-	public Image(int xPos, int yPos, double xScale, double yScale, PImage image){
-		super(xPos, yPos, (int)(image.width*xScale), (int)(image.height*yScale), 0, 0, Color.white);
+	public Image(int xPos, int yPos, double xScale, double yScale, PImage image, String tag){
+		super(xPos, yPos, (int)(image.width*xScale), (int)(image.height*yScale), 0, 0, Color.white, tag);
 		this.image = image;
 		this.xScale = xScale;
 		this.yScale = yScale;
 	}
-	public Image(double xScale, double yScale, PImage image){
-		super(0, 0, (int)(image.width*xScale), (int)(image.height*yScale), 0, 0, Color.white);
+	public Image(double xScale, double yScale, PImage image, String tag){
+		super(0, 0, (int)(image.width*xScale), (int)(image.height*yScale), 0, 0, Color.white, tag);
 		this.image = image;
 		this.xScale = xScale;
 		this.yScale = yScale;
