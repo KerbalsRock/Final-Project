@@ -23,12 +23,16 @@ public class ScrollingCharacter extends Character{
 	
 	public void scrollerUpdate(ArrayList<BasicShape> allObjects){
 		autoToNext();
-		boolean updateY = true;
+		if(!canClimb){
+			setYSpeed(getYSpeed()+gravity);
+		}
+		pseudoY+=getYSpeed();
+		setY((int)pseudoY);
 		boolean updateX = true;
 		canJump = false;
 		canClimb = false;
 		for(BasicShape s : allObjects){
-			if(s.getTag().equals("WALL")){
+			if(s.getTag().toUpperCase().equals("WALL")){
 				String collided = s.sideCollision(this);
 				if(collided.equals("LEFT")){
 					setX(s.getX() - getWidth());
@@ -47,18 +51,18 @@ public class ScrollingCharacter extends Character{
 					setY(s.getY() - getHeight());
 					pseudoY = getY();
 					if(getYSpeed() >= 0){
-						updateY = false;
+						setYSpeed(0);
 					}
 				}
 				else if(collided.equals("BOTTOM")){
 					setY(s.getY2());
 					pseudoY = getY();
 					if(getYSpeed() <= 0){
-						updateY = false;
+						setYSpeed(0);
 					}
 				}	
 			}
-			else if(s.getTag().equals("BOTTOMLESS")){ 
+			else if(s.getTag().toUpperCase().equals("BOTTOMLESS")){ 
 				String collided = s.bottomlessSideCollision(this);
 				if(collided.equals("LEFT")){
 					setX(s.getX() - getWidth());
@@ -78,27 +82,19 @@ public class ScrollingCharacter extends Character{
 						setY(s.getY() - getHeight());
 						pseudoY = getY();
 						if(getYSpeed() >= 0){
-							updateY = false;
+							setYSpeed(0);
 						}
 					}
 				}	 
 			}
-			else if(s.getTag().equals("LADDER")){
+			else if(s.getTag().toUpperCase().equals("LADDER")){
 				if(collidesWith(s)){
+					setYSpeed(0);
 					canClimb = true;
 				}
 			}
 		}
-		if(updateY){
-			if(!canClimb){
-				setYSpeed(getYSpeed()+gravity);
-			}
-			pseudoY+=getYSpeed();
-			setY((int)pseudoY);
-		}else{
-			setYSpeed(0);
-		}
-		
+					
 		if(updateX){
 			for(BasicShape s : allObjects){
 				s.setX((int)(s.getX() - getXSpeed()));
@@ -127,7 +123,8 @@ public class ScrollingCharacter extends Character{
 	public void goToNext(){
 		int prevHeight = getHeight();
 		super.goToNext();
-		setY(getY() + (prevHeight - getHeight()));
+		pseudoY += (prevHeight - getHeight());
+		
 	}
 
 }

@@ -39,7 +39,7 @@ public class Camera extends PApplet {
 		background = loadImage("sky.jpg");
 		g = createGraphics(width, height);
 		listsInit();
-		shrek = new ScrollingCharacter(width/4,height -100, .2, .2, 0, 0, .2, shrekAnimations, "SHREK");
+		shrek = new ScrollingCharacter(width/4,height -100, .2, .2, 0, 0, .25, shrekAnimations, "SHREK");
 		
 	}
 	public void draw(){
@@ -57,14 +57,14 @@ public class Camera extends PApplet {
 	
 	private void update(){
 		if(a){
-			shrek.setXSpeed(-5);
+			shrek.setXSpeed(-15);
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(2);
 			}else{
 				shrek.setAnimation(1);
 			}
 		}else if(d){
-			shrek.setXSpeed(5);
+			shrek.setXSpeed(15);
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(2);
 			}else{
@@ -74,7 +74,7 @@ public class Camera extends PApplet {
 			shrek.setXSpeed(0);
 		}
 		if(space){
-			shrek.jump(-8);
+			shrek.jump(-9);
 		}
 		if(w){
 			if(shrek.getCanClimb()){
@@ -130,29 +130,29 @@ public class Camera extends PApplet {
 		climbingAnimations = new ArrayList<Image>();
 		shrekAnimations = new ArrayList<Animation>();
 		
-		allShapes.add(new Rectangle(0, height - 10, levelLength, 10, Color.green, "WALL"));//0
-		allShapes.add(new Rectangle(-width, -height, width, height*2, Color.darkGray, "WALL"));//1
-		allShapes.add(new Rectangle(levelLength, -height, width, height*2, Color.darkGray, "WALL"));//2
-		allShapes.add(new Rectangle(0, -height, levelLength, 10, Color.darkGray, "WALL"));//3
-		allShapes.add(new Rectangle(200, height - 130, 100, 10, Color.orange, "WALL"));//4
-		allShapes.add(new Rectangle(400, height - 600, 10, 590, Color.orange, "WALL"));//5
-		allShapes.add(new Rectangle(0, height - 260, 70, 10, Color.orange, "WALL"));//6
-		allShapes.add(new Rectangle(500, height - 100, 720, 10, Color.orange, "WALL"));//7
-		allShapes.add(new Rectangle(1220, -height, 20, height*2 - 90, Color.orange, "WALL"));//8
-		allShapes.add(new Rectangle(1300, 100,10, height - 110  , Color.orange, "WALL"));//9
-		allShapes.add(new Rectangle(1890, 100,10, height - 110  , Color.orange, "WALL"));//10
+		allShapes.add(new Rectangle(0, height - 10, levelLength, 10, Color.green, "WALL"));
+		allShapes.add(new Rectangle(-width, -height, width, height*2, Color.darkGray, "WALL"));
+		allShapes.add(new Rectangle(levelLength, -height, width, height*2, Color.darkGray, "WALL"));
+		allShapes.add(new Rectangle(0, -height, levelLength, 10, Color.darkGray, "WALL"));
+		allShapes.add(new Rectangle(200, height - 130, 100, 10, Color.orange, "WALL"));
+		allShapes.add(new Rectangle(400, height - 600, 10, 590, Color.orange, "WALL"));
+		allShapes.add(new Rectangle(0, height - 260, 70, 10, Color.orange, "WALL"));
+		allShapes.add(new Rectangle(500, height - 100, 720, 10, Color.orange, "WALL"));
+		allShapes.add(new Rectangle(1220, -height, 20, height*2 - 90, Color.orange, "WALL"));
+		allShapes.add(new Rectangle(1300, 100,10, height - 110  , Color.orange, "WALL"));
+		allShapes.add(new Rectangle(1890, 100,10, height - 110  , Color.orange, "WALL"));
+		allShapes.add(new Rectangle(500, height - 300, 720, 10, Color.orange, "WALL"));
+		allShapes.add(new Rectangle(270, height - 600, 850, 10, Color.orange, "WALL"));
 		
-		allShapes.add(new Rectangle(270, height - 600, 850, 10, Color.blue, "BOTTOMLESS"));//11
-		allShapes.add(new Rectangle(500, height - 500, 720, 10, Color.blue, "BOTTOMLESS"));//12
-		allShapes.add(new Rectangle(410, height - 400, 710, 10, Color.blue, "BOTTOMLESS"));//13
-		allShapes.add(new Rectangle(500, height - 300, 720, 10, Color.blue, "BOTTOMLESS"));//14
-		allShapes.add(new Rectangle(410, height - 200, 710, 10, Color.blue, "BOTTOMLESS"));//15
-		allShapes.add(new Rectangle(0, height - 410, 400, 10, Color.blue, "BOTTOMLESS"));//16
-		allShapes.add(new Rectangle(0, height - 565, 70, 10, Color.blue, "BOTTOMLESS"));//17
+		allShapes.add(new Rectangle(500, height - 500, 720, 10, Color.blue, "BOTTOMLESS"));
+		allShapes.add(new Rectangle(410, height - 400, 710, 10, Color.blue, "BOTTOMLESS"));
+		allShapes.add(new Rectangle(410, height - 200, 710, 10, Color.blue, "BOTTOMLESS"));
+		allShapes.add(new Rectangle(0, height - 550, 70, 10, Color.blue, "BOTTOMLESS"));
+		allShapes.add(new Rectangle(0, height - 410, 400, 10, Color.blue, "BOTTOMLESS"));
 		
-		allShapes.add(new Rectangle(1240, 0, 60, height - 10  , Color.gray, "LADDER"));//18
-		allShapes.add(new Rectangle(1300, 0, 600, 100 , Color.gray, "LADDER"));//19
-		allShapes.add(new Rectangle(1900, 0, 60, height - 10  , Color.gray, "LADDER"));//20
+		allShapes.add(new Rectangle(1240, 0, 60, height - 10  , Color.gray, "LADDER"));
+		allShapes.add(new Rectangle(1300, 0, 600, 100 , Color.gray, "LADDER"));
+		allShapes.add(new Rectangle(1900, 0, 60, height - 10  , Color.gray, "LADDER"));
 		
 		
 		animationList.add(new Image(1, 1, loadImage("Shrek.png"), ""));
