@@ -84,8 +84,10 @@ public class Camera extends PApplet {
 		}else if(s){
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(2);
+				shrek.climb(3);
+			}else{
+				shrek.drop();
 			}
-			shrek.climb(3);
 		}else{
 			shrek.climb(0);
 		}
@@ -149,6 +151,7 @@ public class Camera extends PApplet {
 		allShapes.add(new Rectangle(410, height - 200, 710, 10, Color.blue, "BOTTOMLESS"));
 		allShapes.add(new Rectangle(0, height - 550, 70, 10, Color.blue, "BOTTOMLESS"));
 		allShapes.add(new Rectangle(0, height - 410, 400, 10, Color.blue, "BOTTOMLESS"));
+		allShapes.add(new Rectangle(0, height - 440, 400, 10, Color.blue, "BOTTOMLESS"));
 		
 		allShapes.add(new Rectangle(1240, 0, 60, height - 10  , Color.gray, "LADDER"));
 		allShapes.add(new Rectangle(1300, 0, 600, 100 , Color.gray, "LADDER"));
