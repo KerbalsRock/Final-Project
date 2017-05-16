@@ -4,16 +4,12 @@ import processing.core.PGraphics;
 public class Character extends Animation{
 	private ArrayList<Animation> animList;
 	int currentIndex;
-	double pseudoY, gravity;
-	boolean canJump;
+
 	
-	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, double gravity, ArrayList<Animation> list, ArrayList<BasicShape> obstacles) {
+	public Character(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed, ArrayList<Animation> list, ArrayList<BasicShape> obstacles) {
 		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list.get(0).getMillisBetweenAnimation(), list.get(0).getList());
-		this.gravity = gravity;
 		animList = list;
-		pseudoY = yPos;
 		currentIndex = 0;
-		canJump = false;
 		setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));
 		setHeight((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getHeight()*animList.get(currentIndex).getYScale()*getYScale()));
 	}
@@ -24,111 +20,32 @@ public class Character extends Animation{
 	
 	public void update(){
 		autoToNext();
-		pseudoY+=getYSpeed();
-		setY((int)pseudoY);
-		setX((int)(getX()+getXSpeed()));
+		super.update();
 	}
 	
-	public void scrollerUpdate(ArrayList<BasicShape> allGameObjects, ArrayList<BasicShape> solidObstacles, ArrayList<BasicShape> bottomlessObstacles){
-		autoToNext();
-		boolean updateY = true;
-		boolean updateX = true;
-		canJump = false;
-		setYSpeed(getYSpeed()+gravity);
-		for(BasicShape s : solidObstacles){
-			String collided = s.sideCollision(this);
-			if(collided.equals("LEFT")){
-				setX(s.getX() - getWidth());
-				if(getXSpeed() >= 0){
-					updateX = false;
-				}
-			}
-			else if(collided.equals("RIGHT")){
-				setX(s.getX2());
-				if(getXSpeed() <= 0){
-					updateX = false;
-				}
-			}
-			else if(collided.equals("TOP")){
-				canJump = true;
-				setY(s.getY() - getHeight());
-				pseudoY = getY();
-				if(getYSpeed() >= 0){
-					updateY = false;
-				}
-			}
-			else if(collided.equals("BOTTOM")){
-				setY(s.getY2());
-				pseudoY = getY();
-				if(getYSpeed() <= 0){
-					updateY = false;
-				}
-			}	
-		}
-		for(BasicShape s : bottomlessObstacles){ 
-			String collided = s.bottomlessSideCollision(this);
-			if(collided.equals("LEFT")){
-				setX(s.getX() - getWidth());
-				if(getXSpeed() >= 0){
-					updateX = false;
-				}
-			}
-			else if(collided.equals("RIGHT")){
-				setX(s.getX2());
-				if(getXSpeed() <= 0){
-					updateX = false;
-				}
-			}
-			else if(collided.equals("TOP")){
-				if(s.getBottomlessCanCollide()){
-					canJump = true;
-					setY(s.getY() - getHeight());
-					pseudoY = getY();
-					if(getYSpeed() >= 0){
-						updateY = false;
-					}
-				}
-			}	
-		}
-		if(updateY){
-			pseudoY+=getYSpeed();
-			setY((int)pseudoY);
-		}else{
-			setYSpeed(0);
-		}
-		if(updateX){
-			for(BasicShape s : allGameObjects){
-				s.setX((int)(s.getX() - getXSpeed()));
-			}
-		}
-	}
 	
-	public void jump(double jumpSpeed){
-		if(canJump){
-			if(getYSpeed() > 0){
-				setYSpeed(0);
-			}
-			setYSpeed(jumpSpeed);
-		}
-	}
 	
 	public void goToNext(){
-		int prevHeight = getHeight();
 		super.goToNext();
 		setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));
 		setHeight((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getHeight()*animList.get(currentIndex).getYScale()*getYScale()));
-		setY(getY() + (prevHeight - getHeight()));
 	}
 		
 	
 	public void setAnimation(int index){
-		if(index!=currentIndex){		
+		if(index!=currentIndex){
+			int prevHeight = getHeight();
 			currentIndex = index;
 			setList(animList.get(currentIndex).getList());
 			setMillisBetweenAnimation(animList.get(currentIndex).getMillisBetweenAnimation());
 			setWidth((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getWidth()*animList.get(currentIndex).getXScale()*getXScale()));
 			setHeight((int)(animList.get(currentIndex).getList().get(getCurrentIndex()).getHeight()*animList.get(currentIndex).getYScale()*getYScale()));
+			setY(getY() + (prevHeight - getHeight()));
 		}
+	}
+	
+	public ArrayList<Animation> getAnimList(){
+		return animList;
 	}
 	
 
