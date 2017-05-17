@@ -149,5 +149,10 @@ public class ScrollingCharacter extends Character{
 		super.setAnimation(index);
 		pseudoY += (prevHeight - getHeight());
 	}
+	public void setScale(double xScale, double yScale){
+		int prevHeight = getHeight();
+		super.setScale(xScale, yScale);
+		pseudoY += (prevHeight - getHeight());
+	}
 
 }

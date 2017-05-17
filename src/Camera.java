@@ -1,9 +1,12 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
+
 
 public class Camera extends PApplet {
 	private PGraphics g;
@@ -20,6 +23,8 @@ public class Camera extends PApplet {
 	private boolean w;
 	private boolean s;
 	private boolean space;
+	private Minim minim;
+	private AudioPlayer player;
 	public static void main(String[] args) {
 		PApplet.main("Camera");
 	}
@@ -40,7 +45,8 @@ public class Camera extends PApplet {
 		g = createGraphics(width, height);
 		listsInit();
 		shrek = new ScrollingCharacter(width/4,height -100, .2, .2, 0, 0, .25, shrekAnimations, "SHREK");
-		
+		minim = new Minim(this);
+		player = minim.loadFile("All Star - Smash Mouth [Lyrics].mp3");
 	}
 	public void draw(){
 		update();
@@ -56,22 +62,37 @@ public class Camera extends PApplet {
 	}
 	
 	private void update(){
+		//shrek.setScale((double)player.mix.level()+.1,(double)player.mix.level()+.1);
+		if(player.mix.level() > .2){
+			background.filter(INVERT);
+		}
+		if(player.position()>=player.length()){
+			player.rewind();
+		}
 		if(a){
-			shrek.setXSpeed(-15);
+			shrek.setXSpeed(-5);
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(2);
 			}else{
 				shrek.setAnimation(1);
 			}
+			if(!player.isPlaying()){
+				player.play();
+			}
 		}else if(d){
-			shrek.setXSpeed(15);
+			shrek.setXSpeed(5);
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(2);
 			}else{
 				shrek.setAnimation(1);
+			}if(!player.isPlaying()){
+				player.play();
 			}
 		}else{
 			shrek.setXSpeed(0);
+			if(player.isPlaying()){
+				player.pause();
+			}
 		}
 		if(space){
 			shrek.jump(-9);
@@ -165,7 +186,7 @@ public class Camera extends PApplet {
 		climbingAnimations.add(new Image(1, 1, loadImage("ShrekClimbing1.png"), ""));
 		climbingAnimations.add(new Image(1, 1, loadImage("ShrekClimbing2.png"), ""));
 		shrekAnimations.add(new Animation(0,0,10,10,400,animationList, ""));
-		shrekAnimations.add(new Animation(0,0,1,1,400,animationList2, ""));
+		shrekAnimations.add(new Animation(0,0,1,1,575,animationList2, ""));
 		shrekAnimations.add(new Animation(0,0,10,10,200,climbingAnimations, ""));
 	}
 	
