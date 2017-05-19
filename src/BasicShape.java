@@ -7,6 +7,7 @@ public abstract class BasicShape {
 	private Color color;
 	private String tag;
 	private boolean bottomlessCanCollide;
+	private int damage;
 	public BasicShape(int xPos, int yPos, int width, int height, Color color, String tag){
 		x = xPos;
 		y = yPos;
@@ -15,9 +16,11 @@ public abstract class BasicShape {
 		this.color = color;
 		bottomlessCanCollide = false;
 		this.tag = tag;
+		damage = 0;
 	}
 	
 	abstract void draw(PGraphics g);
+	abstract void update();
 	
     boolean collidesWith(BasicShape s){
 		return (x <= s.getX2()&& x + width >= s.getX()&&
@@ -143,5 +146,11 @@ public abstract class BasicShape {
 	
 	public boolean getBottomlessCanCollide(){
 		return bottomlessCanCollide;
+	}
+	public int getDamage(){
+		return damage;
+	}
+	public void setDamage(int damage){
+		this.damage = damage;
 	}
 }

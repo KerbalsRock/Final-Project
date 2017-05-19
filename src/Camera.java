@@ -14,7 +14,9 @@ public class Camera extends PApplet {
 	private ArrayList<Image> animationList;
 	private ArrayList<Image> animationList2;
 	private ArrayList<Image> climbingAnimations;
+	private ArrayList<Image> surrealAnimations;
 	private ArrayList<Animation> shrekAnimations;
+	private ArrayList<Animation> enemyAnimations;
 	private ArrayList<BasicShape> allShapes;
 	private PImage background;
 	private int levelLength;
@@ -63,7 +65,7 @@ public class Camera extends PApplet {
 	
 	private void update(){
 		//shrek.setScale((double)player.mix.level()+.1,(double)player.mix.level()+.1);
-		if(player.mix.level() > .2){
+		if(player.mix.level() > .35){
 			background.filter(INVERT);
 		}
 		if(player.position()>=player.length()){
@@ -150,33 +152,38 @@ public class Camera extends PApplet {
 		allShapes = new ArrayList<BasicShape>();
 		animationList = new ArrayList<Image>();
 		animationList2 = new ArrayList<Image>();
+		surrealAnimations = new ArrayList<Image>();
 		climbingAnimations = new ArrayList<Image>();
 		shrekAnimations = new ArrayList<Animation>();
+		enemyAnimations = new ArrayList<Animation>();
+
 		
-		allShapes.add(new Rectangle(0, height - 10, levelLength, 10, Color.green, "WALL"));
-		allShapes.add(new Rectangle(-width, -height, width, height*2, Color.darkGray, "WALL"));
-		allShapes.add(new Rectangle(levelLength, -height, width, height*2, Color.darkGray, "WALL"));
-		allShapes.add(new Rectangle(0, -height, levelLength, 10, Color.darkGray, "WALL"));
-		allShapes.add(new Rectangle(200, height - 130, 100, 10, Color.orange, "WALL"));
-		allShapes.add(new Rectangle(400, height - 600, 10, 590, Color.orange, "WALL"));
-		allShapes.add(new Rectangle(0, height - 260, 70, 10, Color.orange, "WALL"));
-		allShapes.add(new Rectangle(500, height - 100, 720, 10, Color.orange, "WALL"));
-		allShapes.add(new Rectangle(1220, -height, 20, height*2 - 90, Color.orange, "WALL"));
-		allShapes.add(new Rectangle(1300, 100,10, height - 110  , Color.orange, "WALL"));
-		allShapes.add(new Rectangle(1890, 100,10, height - 110  , Color.orange, "WALL"));
-		allShapes.add(new Rectangle(500, height - 300, 720, 10, Color.orange, "WALL"));
-		allShapes.add(new Rectangle(270, height - 600, 850, 10, Color.orange, "WALL"));
+		allShapes.add(new Rectangle(0, height - 10, levelLength, 10, Color.green, "<WALL>"));
+		allShapes.add(new Rectangle(-width, -height, width, height*2, Color.darkGray, "<WALL>"));
+		allShapes.add(new Rectangle(levelLength, -height, width, height*2, Color.darkGray, "<WALL>"));
+		allShapes.add(new Rectangle(0, -height, levelLength, 10, Color.darkGray, "<WALL>"));
+		allShapes.add(new Rectangle(200, height - 130, 100, 10, Color.orange, "<WALL>"));
+		allShapes.add(new Rectangle(400, height - 600, 10, 590, Color.orange, "<WALL>"));
+		allShapes.add(new Rectangle(0, height - 260, 70, 10, Color.orange, "<WALL>"));
+		allShapes.add(new Rectangle(500, height - 100, 720, 10, Color.orange, "<WALL>"));
+		allShapes.add(new Rectangle(1220, -height, 20, height*2 - 90, Color.orange, "<WALL>"));
+		allShapes.add(new Rectangle(1300, 100,10, height - 110  , Color.orange, "<WALL><ENEMYBOUND>"));
+		allShapes.add(new Rectangle(1890, 100,10, height - 110  , Color.orange, "<WALL><ENEMYBOUND>"));
+		allShapes.add(new Rectangle(500, height - 300, 720, 10, Color.orange, "<WALL>"));
+		allShapes.add(new Rectangle(270, height - 600, 850, 10, Color.orange, "<WALL>"));
 		
-		allShapes.add(new Rectangle(500, height - 500, 720, 10, Color.blue, "BOTTOMLESS"));
-		allShapes.add(new Rectangle(410, height - 400, 710, 10, Color.blue, "BOTTOMLESS"));
-		allShapes.add(new Rectangle(410, height - 200, 710, 10, Color.blue, "BOTTOMLESS"));
-		allShapes.add(new Rectangle(0, height - 550, 70, 10, Color.blue, "BOTTOMLESS"));
-		allShapes.add(new Rectangle(0, height - 410, 400, 10, Color.blue, "BOTTOMLESS"));
-		allShapes.add(new Rectangle(0, height - 440, 400, 10, Color.blue, "BOTTOMLESS"));
+		allShapes.add(new Rectangle(500, height - 500, 720, 10, Color.blue, "<BOTTOMLESS>"));
+		allShapes.add(new Rectangle(410, height - 400, 710, 10, Color.blue, "<BOTTOMLESS>"));
+		allShapes.add(new Rectangle(410, height - 200, 710, 10, Color.blue, "<BOTTOMLESS>"));
+		allShapes.add(new Rectangle(0, height - 550, 70, 10, Color.blue, "<BOTTOMLESS>"));
+		allShapes.add(new Rectangle(0, height - 410, 400, 10, Color.blue, "<BOTTOMLESS>"));
+		allShapes.add(new Rectangle(0, height - 440, 400, 10, Color.blue, "<BOTTOMLESS>"));
 		
-		allShapes.add(new Rectangle(1240, 0, 60, height - 10  , Color.gray, "LADDER"));
-		allShapes.add(new Rectangle(1300, 0, 600, 100 , Color.gray, "LADDER"));
-		allShapes.add(new Rectangle(1900, 0, 60, height - 10  , Color.gray, "LADDER"));
+		allShapes.add(new Rectangle(1240, 0, 60, height - 10  , Color.gray, "<LADDER>"));
+		allShapes.add(new Rectangle(1300, 0, 600, 100 , Color.gray, "<LADDER>"));
+		allShapes.add(new Rectangle(1900, 0, 60, height - 10  , Color.gray, "<LADDER>"));
+		
+		
 		
 		
 		animationList.add(new Image(1, 1, loadImage("Shrek.png"), ""));
@@ -185,6 +192,10 @@ public class Camera extends PApplet {
 		animationList2.add(new Image(1, 1, loadImage("Shrekcharacter1.png"), ""));
 		climbingAnimations.add(new Image(1, 1, loadImage("ShrekClimbing1.png"), ""));
 		climbingAnimations.add(new Image(1, 1, loadImage("ShrekClimbing2.png"), ""));
+		surrealAnimations.add(new Image(1, 1, loadImage("nogenders.jpg"), ""));
+		surrealAnimations.add(new Image(1, 1, loadImage("nogenders (2).jpg"), ""));
+
+		enemyAnimations.add(new Animation(0,0,1,1,1000,surrealAnimations, ""));
 		shrekAnimations.add(new Animation(0,0,10,10,400,animationList, ""));
 		shrekAnimations.add(new Animation(0,0,1,1,575,animationList2, ""));
 		shrekAnimations.add(new Animation(0,0,10,10,200,climbingAnimations, ""));
