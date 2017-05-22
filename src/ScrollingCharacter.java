@@ -5,6 +5,9 @@ public class ScrollingCharacter extends Character{
 	boolean canJump;
 	boolean canClimb;
 	boolean dropping;
+	boolean immune;
+	long immuneStart;
+	int immuneTime;
 	int health;
 	public ScrollingCharacter(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed,
 			double gravity, ArrayList<Animation> list, String tag) {
@@ -15,6 +18,9 @@ public class ScrollingCharacter extends Character{
 		canClimb = false;
 		dropping = false;
 		health = 100;
+		immune = false;
+		immuneTime = 2000;
+		immuneStart = System.currentTimeMillis()-immuneTime;
 	}
 	
 	public void update(){
@@ -35,6 +41,11 @@ public class ScrollingCharacter extends Character{
 		boolean updateX = true;
 		canJump = false;
 		canClimb = false;
+		
+		if(immuneStart + immuneTime < System.currentTimeMillis()){
+			immune = false;
+		}
+		
 		for(BasicShape s : allObjects){
 			s.update();
 			if(s.getTag().toUpperCase().contains("<WALL>")){
@@ -68,7 +79,7 @@ public class ScrollingCharacter extends Character{
 					}
 				}	
 			}
-			else if(s.getTag().toUpperCase().contains("<BOTTOMLESS>")){ 
+			if(s.getTag().toUpperCase().contains("<BOTTOMLESS>")){ 
 				String collided = s.bottomlessSideCollision(this);
 				if(collided.equals("NONE") && s.getTag().toUpperCase().contains("<DROPPED>")){
 					s.setTag(s.getTag().toUpperCase().replaceAll("<DROPPED>", ""));
@@ -101,19 +112,24 @@ public class ScrollingCharacter extends Character{
 					}
 				}	 
 			}
-			else if(s.getTag().toUpperCase().contains("<LADDER>")){
+			if(s.getTag().toUpperCase().contains("<LADDER>")){
 				if(collidesWith(s)){
 					setYSpeed(0);
 					canClimb = true;
 				}
 			}
-			else if(s.getTag().toUpperCase().contains("<DAMAGING>")){
-				if(collidesWith(s)){
+			if(s.getTag().toUpperCase().contains("<DAMAGING>")){
+				if(collidesWith(s) && !immune){
 					health -= s.getDamage();
+					System.out.println(health);
+					immune = true;
+					immuneStart = System.currentTimeMillis();
 				}
 			}
+			try{
+				((Enemy)s).enemyUpdate(allObjects);
+			}catch(ClassCastException e){}
 		}
-					
 		if(updateX){
 			for(BasicShape s : allObjects){
 				s.setX((int)(s.getX() - getXSpeed()));

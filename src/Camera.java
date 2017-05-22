@@ -11,6 +11,7 @@ import processing.core.PImage;
 public class Camera extends PApplet {
 	private PGraphics g;
 	private ScrollingCharacter shrek;
+	private Enemy nogenders;
 	private ArrayList<Image> animationList;
 	private ArrayList<Image> animationList2;
 	private ArrayList<Image> climbingAnimations;
@@ -46,7 +47,7 @@ public class Camera extends PApplet {
 		background = loadImage("sky.jpg");
 		g = createGraphics(width, height);
 		listsInit();
-		shrek = new ScrollingCharacter(width/4,height -100, .2, .2, 0, 0, .25, shrekAnimations, "SHREK");
+		shrek = new ScrollingCharacter(width/4,height -100, .2, .2, 0, 0, .25, shrekAnimations, "<ENEMYBOUND>");
 		minim = new Minim(this);
 		player = minim.loadFile("All Star - Smash Mouth [Lyrics].mp3");
 	}
@@ -72,7 +73,7 @@ public class Camera extends PApplet {
 			player.rewind();
 		}
 		if(a){
-			shrek.setXSpeed(-5);
+			shrek.setXSpeed(-15);
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(2);
 			}else{
@@ -82,7 +83,7 @@ public class Camera extends PApplet {
 				player.play();
 			}
 		}else if(d){
-			shrek.setXSpeed(5);
+			shrek.setXSpeed(15);
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(2);
 			}else{
@@ -97,7 +98,7 @@ public class Camera extends PApplet {
 			}
 		}
 		if(space){
-			shrek.jump(-9);
+			shrek.jump(-19);
 		}
 		if(w){
 			if(shrek.getCanClimb()){
@@ -118,6 +119,7 @@ public class Camera extends PApplet {
 			shrek.setAnimation(0);
 		}
 		shrek.scrollerUpdate(allShapes);
+	
 	}
 	
 	public void keyPressed(){
@@ -182,8 +184,7 @@ public class Camera extends PApplet {
 		allShapes.add(new Rectangle(1240, 0, 60, height - 10  , Color.gray, "<LADDER>"));
 		allShapes.add(new Rectangle(1300, 0, 600, 100 , Color.gray, "<LADDER>"));
 		allShapes.add(new Rectangle(1900, 0, 60, height - 10  , Color.gray, "<LADDER>"));
-		
-		
+
 		
 		
 		animationList.add(new Image(1, 1, loadImage("Shrek.png"), ""));
@@ -199,6 +200,8 @@ public class Camera extends PApplet {
 		shrekAnimations.add(new Animation(0,0,10,10,400,animationList, ""));
 		shrekAnimations.add(new Animation(0,0,1,1,575,animationList2, ""));
 		shrekAnimations.add(new Animation(0,0,10,10,200,climbingAnimations, ""));
+		
+		allShapes.add(new Enemy(1500, height-100, .2, .2, 10, 0.0, enemyAnimations, "<ENEMY><WALL>", 20));
 	}
 	
 	
