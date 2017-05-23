@@ -9,6 +9,7 @@ public class ScrollingCharacter extends Character{
 	long immuneStart;
 	int immuneTime;
 	int health;
+	int originalX;
 	public ScrollingCharacter(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed,
 			double gravity, ArrayList<Animation> list, String tag) {
 		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list, tag);
@@ -21,6 +22,7 @@ public class ScrollingCharacter extends Character{
 		immune = false;
 		immuneTime = 2000;
 		immuneStart = System.currentTimeMillis()-immuneTime;
+		originalX = xPos;
 	}
 	
 	public void update(){
@@ -127,13 +129,18 @@ public class ScrollingCharacter extends Character{
 				}
 			}
 			try{
-				((Enemy)s).enemyUpdate(allObjects);
+				((Enemy)s).checkCollisionAndDoStuff(allObjects);
 			}catch(ClassCastException e){}
 		}
 		if(updateX){
 			for(BasicShape s : allObjects){
 				s.setX((int)(s.getX() - getXSpeed()));
 			}
+		}
+		int offset = originalX - getX();
+		setX(getX()+offset);
+		for(BasicShape s : allObjects){
+			s.setX(s.getX()+offset);
 		}
 	}
 	

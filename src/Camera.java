@@ -15,10 +15,12 @@ public class Camera extends PApplet {
 	private ArrayList<Image> animationList;
 	private ArrayList<Image> animationList2;
 	private ArrayList<Image> climbingAnimations;
-	private ArrayList<Image> surrealAnimations;
+	private ArrayList<Image> surrealAnimation1;
+	private ArrayList<Image> surrealAnimation2;
 	private ArrayList<Animation> shrekAnimations;
 	private ArrayList<Animation> enemyAnimations;
 	private ArrayList<BasicShape> allShapes;
+	Enemy enemy1;
 	private PImage background;
 	private int levelLength;
 	private boolean a;
@@ -49,7 +51,7 @@ public class Camera extends PApplet {
 		listsInit();
 		shrek = new ScrollingCharacter(width/4,height -100, .2, .2, 0, 0, .25, shrekAnimations, "<ENEMYBOUND>");
 		minim = new Minim(this);
-		player = minim.loadFile("All Star - Smash Mouth [Lyrics].mp3");
+		player = minim.loadFile("Bag Raiders - Shooting Stars.mp3");
 	}
 	public void draw(){
 		update();
@@ -66,6 +68,11 @@ public class Camera extends PApplet {
 	
 	private void update(){
 		//shrek.setScale((double)player.mix.level()+.1,(double)player.mix.level()+.1);
+		if(enemy1.getXSpeed() < 0){
+			enemy1.setAnimation(1);
+		}else{
+			enemy1.setAnimation(0);
+		}
 		if(player.mix.level() > .35){
 			background.filter(INVERT);
 		}
@@ -154,13 +161,14 @@ public class Camera extends PApplet {
 		allShapes = new ArrayList<BasicShape>();
 		animationList = new ArrayList<Image>();
 		animationList2 = new ArrayList<Image>();
-		surrealAnimations = new ArrayList<Image>();
+		surrealAnimation1 = new ArrayList<Image>();
+		surrealAnimation2 = new ArrayList<Image>();
 		climbingAnimations = new ArrayList<Image>();
 		shrekAnimations = new ArrayList<Animation>();
 		enemyAnimations = new ArrayList<Animation>();
 
 		
-		allShapes.add(new Rectangle(0, height - 10, levelLength, 10, Color.green, "<WALL>"));
+		allShapes.add(new Rectangle(0, height - 10, levelLength, 10, Color.green, "<WALL><ENEMYBOUND>"));
 		allShapes.add(new Rectangle(-width, -height, width, height*2, Color.darkGray, "<WALL>"));
 		allShapes.add(new Rectangle(levelLength, -height, width, height*2, Color.darkGray, "<WALL>"));
 		allShapes.add(new Rectangle(0, -height, levelLength, 10, Color.darkGray, "<WALL>"));
@@ -193,15 +201,17 @@ public class Camera extends PApplet {
 		animationList2.add(new Image(1, 1, loadImage("Shrekcharacter1.png"), ""));
 		climbingAnimations.add(new Image(1, 1, loadImage("ShrekClimbing1.png"), ""));
 		climbingAnimations.add(new Image(1, 1, loadImage("ShrekClimbing2.png"), ""));
-		surrealAnimations.add(new Image(1, 1, loadImage("nogenders.jpg"), ""));
-		surrealAnimations.add(new Image(1, 1, loadImage("nogenders (2).jpg"), ""));
+		surrealAnimation1.add(new Image(1, 1, loadImage("nogenders.jpg"), ""));
+		surrealAnimation2.add(new Image(1, 1, loadImage("nogenders (2).jpg"), ""));
 
-		enemyAnimations.add(new Animation(0,0,1,1,1000,surrealAnimations, ""));
+		enemyAnimations.add(new Animation(0,0,1,1,1000,surrealAnimation1, ""));
+		enemyAnimations.add(new Animation(0,0,1,1,1000,surrealAnimation2, ""));
 		shrekAnimations.add(new Animation(0,0,10,10,400,animationList, ""));
 		shrekAnimations.add(new Animation(0,0,1,1,575,animationList2, ""));
 		shrekAnimations.add(new Animation(0,0,10,10,200,climbingAnimations, ""));
-		
-		allShapes.add(new Enemy(1500, height-100, .2, .2, 10, 0.0, enemyAnimations, "<ENEMY><WALL>", 20));
+	
+		enemy1 = new Enemy(1500, height-100, .2, .2, 5, 0, enemyAnimations, 20, .2,  "<ENEMY>");
+		allShapes.add(enemy1);
 	}
 	
 	
