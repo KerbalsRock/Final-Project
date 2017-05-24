@@ -21,6 +21,7 @@ public class Camera extends PApplet {
 	private ArrayList<Animation> enemyAnimations;
 	private ArrayList<BasicShape> allShapes;
 	Enemy enemy1;
+	private HealthBar shrekHealth;
 	private PImage background;
 	private int levelLength;
 	private boolean a;
@@ -50,6 +51,7 @@ public class Camera extends PApplet {
 		g = createGraphics(width, height);
 		listsInit();
 		shrek = new ScrollingCharacter(width/4,height -100, .2, .2, 0, 0, .25, shrekAnimations, "<ENEMYBOUND>");
+		shrekHealth = new HealthBar(width-400, 50, 300, 50, shrek.getHealth());
 		minim = new Minim(this);
 		player = minim.loadFile("Bag Raiders - Shooting Stars.mp3");
 	}
@@ -61,6 +63,7 @@ public class Camera extends PApplet {
         for(BasicShape s : allShapes){
         	s.draw(g);
         }
+        shrekHealth.draw(g);
         shrek.draw(g);
 		g.endDraw();
 		image(g, 0, 0);
@@ -68,6 +71,7 @@ public class Camera extends PApplet {
 	
 	private void update(){
 		//shrek.setScale((double)player.mix.level()+.1,(double)player.mix.level()+.1);
+		shrekHealth.setHealth(shrek.getHealth());
 		if(enemy1.getXSpeed() < 0){
 			enemy1.setAnimation(1);
 		}else{

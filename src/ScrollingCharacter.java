@@ -174,7 +174,9 @@ public class ScrollingCharacter extends Character{
 		pseudoY += (prevHeight - getHeight());
 		
 	}
-	
+	public int getHealth(){
+		return health;
+	}
 	public void setAnimation(int index){
 		int prevHeight = getHeight();
 		super.setAnimation(index);
