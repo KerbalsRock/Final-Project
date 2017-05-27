@@ -20,7 +20,7 @@ public class ScrollingCharacter extends Character{
 		dropping = false;
 		health = 100;
 		immune = false;
-		immuneTime = 2000;
+		immuneTime = 1000;
 		immuneStart = System.currentTimeMillis()-immuneTime;
 		originalX = xPos;
 	}

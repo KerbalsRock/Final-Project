@@ -8,9 +8,8 @@ public class HealthBar extends BasicShape{
 	private Rectangle healthDisplay;
 	private int health;
 	private int initialHealth;
-	private Character c = null;
 	public HealthBar(int xPos, int yPos, int width, int height, int health){
-		super(xPos, yPos, height, width, Color.black, "");
+		super(xPos, yPos, width, height, Color.black, "");
 		healthBorder = new Rectangle(xPos, yPos, width, height, Color.black, "");
 		healthBackground = new Rectangle(xPos+1, yPos+1, width-2, height-2, Color.red, "");
 		healthDisplay = new Rectangle(xPos+1, yPos+1, width-2, height-2, Color.green, "");
@@ -19,7 +18,7 @@ public class HealthBar extends BasicShape{
 	}
 	public void setHealth(int health){
 		this.health = health;
-		healthDisplay.setWidth((healthBackground.getWidth()-2)*health/initialHealth);
+		healthDisplay.setWidth((getWidth()-2)*health/initialHealth);
 	}
 	public void setPos(int xPos, int yPos){
 		super.setPos(xPos, yPos);
@@ -28,11 +27,13 @@ public class HealthBar extends BasicShape{
 		healthDisplay.setPos(xPos+1, yPos+1);
 	}
 	public void setWidth(int width){
+		super.setWidth(width);
 		healthBorder.setWidth(width);
 		healthBackground.setWidth(width-2);
 		healthDisplay.setWidth((width-2)*health/initialHealth);
 	}
 	public void setHeight(int height){
+		super.setHeight(height);
 		healthBorder.setHeight(height);
 		healthBackground.setHeight(height-2);
 		healthDisplay.setHeight(height-2);
