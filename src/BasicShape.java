@@ -16,7 +16,7 @@ public abstract class BasicShape {
 		this.color = color;
 		bottomlessCanCollide = false;
 		this.tag = tag;
-		damage = 0;
+		damage = 100;
 	}
 	
 	abstract void draw(PGraphics g);

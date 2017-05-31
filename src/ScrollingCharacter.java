@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ScrollingCharacter extends Character{
 	double pseudoY, gravity;
@@ -50,7 +51,10 @@ public class ScrollingCharacter extends Character{
 			immune = false;
 		}
 		
-		for(BasicShape s : allObjects){
+		Iterator<BasicShape> i = allObjects.iterator();
+
+		while(i.hasNext()){
+			BasicShape s = i.next();
 			s.update();
 			if(s.getTag().toUpperCase().contains("<WALL>")){
 				String collided = s.sideCollision(this);
@@ -131,14 +135,19 @@ public class ScrollingCharacter extends Character{
 			if(s.getTag().toUpperCase().contains("<DAMAGING>")){
 				if(collidesWith(s) && !immune){
 					health -= s.getDamage();
-					System.out.println(health);
 					immune = true;
 					immuneStart = System.currentTimeMillis();
 				}
+				try{
+					((Enemy)s).checkCollisionAndDoStuff(allObjects);
+					if(s.sideCollision(this).equals("TOP") && getYSpeed() >= 0){
+						health += s.getDamage();
+						immune = false;
+						immuneStart -= immuneTime;
+						i.remove();
+					}
+				}catch(ClassCastException e){}
 			}
-			try{
-				((Enemy)s).checkCollisionAndDoStuff(allObjects);
-			}catch(ClassCastException e){}
 		}
 		if(updateX){
 			for(BasicShape s : allObjects){

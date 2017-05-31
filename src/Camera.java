@@ -11,7 +11,12 @@ import processing.core.PImage;
 public class Camera extends PApplet {
 	private PGraphics g;
 	private ScrollingCharacter shrek;
-	private Enemy nogenders;
+	private Enemy dropInEnemy;
+	private Enemy mob1;
+	private Enemy mob2;
+	private Enemy mob3;
+	private Enemy mob4;
+	private Enemy mob5;
 	private ArrayList<Image> idle;
 	private ArrayList<Image> walkingLeft;
 	private ArrayList<Image> walkingRight;
@@ -33,6 +38,7 @@ public class Camera extends PApplet {
 	private AudioPlayer allStar;
 	private AudioPlayer shootingStars;
 	private AudioPlayer earRape;
+	double fontSize;
 	public static void main(String[] args) {
 		PApplet.main("Camera");
 	}
@@ -48,7 +54,7 @@ public class Camera extends PApplet {
 		space = false;
 		noCursor();
 		frameRate(60);
-		levelLength = width*2;
+		levelLength = 8000;
 		background = loadImage("sky.jpg");
 		g = createGraphics(width, height);
 		listsInit();
@@ -58,6 +64,7 @@ public class Camera extends PApplet {
 		allStar = minim.loadFile("All Star - Smash Mouth [Lyrics].mp3");
 		shootingStars = minim.loadFile("Bag Raiders - Shooting Stars.mp3");
 		earRape = minim.loadFile("Smash Mouth - Allstar (Earrape).mp3");
+		fontSize = 60;
 	}
 	public void draw(){
 		if(shrek.getHealth()>0){
@@ -83,7 +90,8 @@ public class Camera extends PApplet {
 			if(shootingStars.mix.level()>.35){
 				background(Color.green.getRGB());
 			}
-			textSize(69);
+			textSize((int)fontSize);
+			fontSize += .05;
 			textAlign(CENTER,CENTER);
 			text("You Win!", width/2, height/2);
 		}
@@ -102,10 +110,15 @@ public class Camera extends PApplet {
 	
 	private void update(){
 		shrekHealth.setHealth(shrek.getHealth());
-		if(nogenders.getXSpeed() < 0){
-			nogenders.setAnimation(1);
-		}else{
-			nogenders.setAnimation(0);
+		for(BasicShape s : allShapes){
+			try{
+				if(((Enemy)s).getXSpeed() < 0){
+					((Enemy)s).setAnimation(1);
+				}else{
+					((Enemy)s).setAnimation(0);
+				}
+			}catch(ClassCastException e){}
+			
 		}
 		if(allStar.position()>=allStar.length()){
 			allStar.rewind();
@@ -134,11 +147,11 @@ public class Camera extends PApplet {
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(3);
 			}
-			shrek.climb(-4);
+			shrek.climb(-3);
 		}else if(s){
 			if(shrek.getCanClimb()){
 				shrek.setAnimation(3);
-				shrek.climb(3);
+				shrek.climb(2);
 			}else{
 				shrek.drop();
 			}
@@ -193,30 +206,80 @@ public class Camera extends PApplet {
 		enemyAnimations = new ArrayList<Animation>();
 
 		
-		allShapes.add(new Rectangle(0, height - 10, levelLength, 10, Color.green, "<WALL><ENEMYBOUND>"));
+		allShapes.add(new Rectangle(0, height, levelLength, 10, Color.green, "<WALL>"));
 		allShapes.add(new Rectangle(-width, -height, width, height*2, Color.darkGray, "<WALL>"));
 		allShapes.add(new Rectangle(levelLength, -height, width, height*2, Color.darkGray, "<WALL>"));
-		allShapes.add(new Rectangle(0, -height, levelLength, 10, Color.darkGray, "<WALL>"));
-		allShapes.add(new Rectangle(200, height - 130, 100, 10, Color.orange, "<WALL>"));
-		allShapes.add(new Rectangle(400, height - 600, 10, 590, Color.orange, "<WALL>"));
-		allShapes.add(new Rectangle(0, height - 260, 70, 10, Color.orange, "<WALL>"));
-		allShapes.add(new Rectangle(500, height - 100, 720, 10, Color.orange, "<WALL>"));
-		allShapes.add(new Rectangle(1220, -height, 20, height*2 - 90, Color.orange, "<WALL>"));
-		allShapes.add(new Rectangle(1300, 100,10, height - 110  , Color.orange, "<WALL><ENEMYBOUND>"));
-		allShapes.add(new Rectangle(1890, 100,10, height - 110  , Color.orange, "<WALL><ENEMYBOUND><END>"));
-		allShapes.add(new Rectangle(500, height - 300, 720, 10, Color.orange, "<WALL>"));
-		allShapes.add(new Rectangle(270, height - 600, 850, 10, Color.orange, "<WALL>"));
+		allShapes.add(new Rectangle(0, -10, levelLength, 10, Color.darkGray, "<WALL>"));
+
+		allShapes.add(new Rectangle(0, height - 25, 600, 25, Color.green, "<WALL>,<end>"));//starting plat
+		allShapes.add(new Image(600, height - 20, 200, 20, loadImage("lava.jpg"), "<DAMAGING>"));//first lava
+		allShapes.add(new Rectangle(800, height - 25, 300, 25, Color.green, "<WALL>"));//second plat
+		allShapes.add(new Image(1100, height - 20, 350, 20, loadImage("lava.jpg"), "<DAMAGING>"));//second lava
+		allShapes.add(new Rectangle(1450, height - 25, 300, 25, Color.green, "<WALL>"));//third plat
+		allShapes.add(new Image(1750, height - 20, 550, 20, loadImage("lava.jpg"), "<DAMAGING>"));//third lava
+		allShapes.add(new Rectangle(1650, height - 170, 750, 10, new Color(139,69,19), "<BOTTOMLESS>"));//first bottomless
+		allShapes.add(new Rectangle(2300, height - 25, 500, 25, Color.green, "<WALL>"));//fourth plat
+		allShapes.add(new Image(2750, height - 225, 50, 200, loadImage("ladder.png"), "<LADDER>"));//ladder 1 part 1
+		allShapes.add(new Image(2750, height - 425, 50, 200, loadImage("ladder.png"), "<LADDER>"));//ladder 1 part 2
+		allShapes.add(new Image(2750, height - 625, 50, 200, loadImage("ladder.png"), "<LADDER>"));//ladder 1 part 3
+		allShapes.add(new Rectangle(2800, height - 540, 10, 540, Color.darkGray, "<WALL><ENEMYBOUND>"));//ladder blocker
+		allShapes.add(new Rectangle(2800, height - 550, 600, 10, new Color(139,69,19), "<BOTTOMLESS>"));//second bottomless
+		allShapes.add(new Rectangle(3400, height - height, 10, height - 540, Color.darkGray, "<WALL>"));//other blocker
+		allShapes.add(new Rectangle(2810, height - 25, 690, 25, Color.green, "<WALL><ENEMYBOUND>"));//fifth plat
 		
-		allShapes.add(new Rectangle(500, height - 500, 720, 10, Color.blue, "<BOTTOMLESS>"));
-		allShapes.add(new Rectangle(410, height - 400, 710, 10, Color.blue, "<BOTTOMLESS>"));
-		allShapes.add(new Rectangle(410, height - 200, 710, 10, Color.blue, "<BOTTOMLESS>"));
-		allShapes.add(new Rectangle(0, height - 550, 70, 10, Color.blue, "<BOTTOMLESS>"));
-		allShapes.add(new Rectangle(0, height - 410, 400, 10, Color.blue, "<BOTTOMLESS>"));
-		allShapes.add(new Rectangle(0, height - 440, 400, 10, Color.blue, "<BOTTOMLESS>"));
+		allShapes.add(new Rectangle(3500, height - 100, 100, 100, Color.green, "<WALL><ENEMYBOUND>"));//parkour square
+		allShapes.add(new Image(3600, height - 20, 500, 20, loadImage("lava.jpg"), "<DAMAGING>"));//parkour lava 1
+		allShapes.add(new Image(4100, height - 20, 500, 20, loadImage("lava.jpg"), "<DAMAGING>"));//parkour lava 2
+		allShapes.add(new Image(4600, height - 20, 500, 20, loadImage("lava.jpg"), "<DAMAGING>"));//parkour lava 3
+		allShapes.add(new Image(5100, height - 20, 400, 20, loadImage("lava.jpg"), "<DAMAGING>"));//parkour lava 4
+		allShapes.add(new Rectangle(3800, height - 200, 25, 10, new Color(139,69,19), "<BOTTOMLESS>"));//first parkour block
+		allShapes.add(new Rectangle(4100, height - 300, 25, 10, new Color(139,69,19), "<BOTTOMLESS>"));//second parkour block
+		allShapes.add(new Rectangle(4250, height - 450, 40, 10, new Color(139,69,19), "<BOTTOMLESS>"));//third parkour block
+		allShapes.add(new Rectangle(4800, height - 100, 40, 10, new Color(139,69,19), "<BOTTOMLESS>"));//fourth parkour block
+		allShapes.add(new Rectangle(4810, height - 280, 30, 10, new Color(139,69,19), "<BOTTOMLESS>"));//fifth parkour block
+		allShapes.add(new Rectangle(5050, height - 460, 40, 10, new Color(139,69,19), "<BOTTOMLESS>"));//final parkour block
 		
-		allShapes.add(new Rectangle(1240, 0, 60, height - 10  , Color.gray, "<LADDER>"));
-		allShapes.add(new Rectangle(1300, 0, 600, 100 , Color.gray, "<LADDER>"));
-		allShapes.add(new Rectangle(1900, 0, 60, height - 10  , Color.gray, "<LADDER>"));
+		allShapes.add(new Rectangle(5500, height - 25, 1600, 25, Color.green, "<WALL>"));//fifth plat
+		allShapes.add(new Image(6050, height - 225, 50, 200, loadImage("ladder.png"), "<LADDER>"));//ladder 2 part 1
+		allShapes.add(new Image(6050, height - 425, 50, 200, loadImage("ladder.png"), "<LADDER>"));//ladder 2 part 2
+		allShapes.add(new Image(6050, height - 625, 50, 200, loadImage("ladder.png"), "<LADDER><ENEMYBOUND>"));//ladder 2 part 3
+		allShapes.add(new Image(6050, height - 825, 50, 200, loadImage("ladder.png"), "<LADDER>"));//ladder 2 part 4
+		allShapes.add(new Rectangle(6100, height - 450, 600, 25, Color.darkGray, "<WALL><ENEMYBOUND>"));//split divider
+		
+		allShapes.add(new Rectangle(6130, height - 320, 10, 295, Color.darkGray, "<WALL>"));//ladder blocke
+		allShapes.add(new Image(6140, height - 225, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder -1 part 1
+		allShapes.add(new Image(6140, height - 425, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder -1 part 2
+		allShapes.add(new Rectangle(6210, height - 425, 10, 295, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Image(6220, height - 225, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 0 part 1
+		allShapes.add(new Image(6220, height - 425, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 0 part 2
+		allShapes.add(new Rectangle(6290, height - 320, 10, 295, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Image(6300, height - 225, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 1 part 1
+		allShapes.add(new Image(6300, height - 425, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 1 part 2
+		allShapes.add(new Rectangle(6370, height - 425, 10, 295, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Image(6380, height - 225, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 2 part 1
+		allShapes.add(new Image(6380, height - 425, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 2 part 2
+		allShapes.add(new Rectangle(6450, height - 320, 10, 295, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Image(6460, height - 225, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 3 part 1
+		allShapes.add(new Image(6460, height - 425, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 3 part 2
+		allShapes.add(new Rectangle(6530, height - 425, 10, 295, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Image(6540, height - 225, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 4 part 1
+		allShapes.add(new Image(6540, height - 425, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 4 part 2
+		allShapes.add(new Rectangle(6610, height - 320, 10, 295, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Image(6620, height - 225, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 5 part 1
+		allShapes.add(new Image(6620, height - 425, 70, 200, loadImage("ladder.png"), "<LADDER>"));//evil ladder 5 part 2
+		allShapes.add(new Rectangle(6690, height - 425, 10, 295, Color.darkGray, "<WALL>"));//ladder blocker
+		
+		allShapes.add(new Rectangle(6100, height - 500, 10, 50, Color.darkGray, "<WALL><ENEMYBOUND>"));//left enemy blocker
+		allShapes.add(new Rectangle(6250, height - height, 10, height - 550, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Rectangle(6375, height - height, 10, height - 550, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Rectangle(6500, height - height, 10, height - 550, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Rectangle(6625, height - height, 10, height - 550, Color.darkGray, "<WALL>"));//ladder blocker
+		allShapes.add(new Rectangle(6690, height - 500, 10, 50, Color.darkGray, "<WALL><ENEMYBOUND>"));//right enemy blocker
+		
+		allShapes.add(new Image(7100, height-25, 300, 25, loadImage("finishline.png"), "<END>"));
+		allShapes.add(new Image(7400, height-25, 300, 25, loadImage("finishline.png"), "<END>"));
+		allShapes.add(new Image(7700, height-25, 300, 25, loadImage("finishline.png"), "<END>"));
+		
 
 		
 		
@@ -245,8 +308,20 @@ public class Camera extends PApplet {
 		shrekAnimations.add(new Animation(0,0,1,1,200,walkingRight, ""));
 		shrekAnimations.add(new Animation(0,0,1,1,100,climbing, ""));
 	
-		nogenders = new Enemy(1500, height-100, .2, .2, 5, 0, enemyAnimations, 20, .2,  "<ENEMY>");
-		allShapes.add(nogenders);
+		allShapes.add(new Enemy(2900, height-100, .2, .2, 3, 0, enemyAnimations, 20, .2, "<ENEMY>"));//drop in
+		
+		allShapes.add(new Enemy(6100, height-550, .1, .1, 1, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 1
+		allShapes.add(new Enemy(6100, height-550, .1, .1, 2, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 2
+		allShapes.add(new Enemy(6100, height-550, .1, .1, 3, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 3
+		allShapes.add(new Enemy(6100, height-550, .1, .1, 4, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 4
+		allShapes.add(new Enemy(6500, height-550, .1, .1, 5, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 5
+		
+		allShapes.add(new Enemy(6500, height-550, .1, .1, -1, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 6
+		allShapes.add(new Enemy(6500, height-550, .1, .1, -2, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 7
+		allShapes.add(new Enemy(6500, height-550, .1, .1, -3, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 8
+		allShapes.add(new Enemy(6500, height-550, .1, .1, -4, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 9
+		allShapes.add(new Enemy(6500, height-550, .1, .1, -5, 0, enemyAnimations, 20, .2, "<ENEMY>"));//mob 10
+
 	}
 	
 	
