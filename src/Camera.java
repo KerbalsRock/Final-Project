@@ -70,15 +70,11 @@ public class Camera extends PApplet {
 	}
 	
 	private void update(){
-		//shrek.setScale((double)player.mix.level()+.1,(double)player.mix.level()+.1);
 		shrekHealth.setHealth(shrek.getHealth());
 		if(nogenders.getXSpeed() < 0){
 			nogenders.setAnimation(1);
 		}else{
 			nogenders.setAnimation(0);
-		}
-		if(player.mix.level() > .35){
-			background.filter(INVERT);
 		}
 		if(player.position()>=player.length()){
 			player.rewind();
@@ -89,9 +85,6 @@ public class Camera extends PApplet {
 				shrek.setAnimation(3);
 			}else{
 				shrek.setAnimation(1);
-			}
-			if(!player.isPlaying()){
-				player.play();
 			}
 		}else if(d){
 			shrek.setXSpeed(5);
@@ -104,9 +97,6 @@ public class Camera extends PApplet {
 			}
 		}else{
 			shrek.setXSpeed(0);
-			if(player.isPlaying()){
-				player.pause();
-			}
 		}
 		if(space){
 			shrek.jump(-10);
@@ -215,8 +205,8 @@ public class Camera extends PApplet {
 		
 		climbing.add(new Image(1, 1, loadImage("ShrekClimbing1.png"), ""));
 		climbing.add(new Image(1, 1, loadImage("ShrekClimbing2.png"), ""));
-		surrealAnimation1.add(new Image(1, 1, loadImage("nogenders.jpg"), ""));
-		surrealAnimation2.add(new Image(1, 1, loadImage("nogenders (2).jpg"), ""));
+		surrealAnimation1.add(new Image(1, 1, loadImage("nogenders.png"), ""));
+		surrealAnimation2.add(new Image(1, 1, loadImage("nogenders (2).png"), ""));
 
 		enemyAnimations.add(new Animation(0,0,1,1,1000,surrealAnimation1, ""));
 		enemyAnimations.add(new Animation(0,0,1,1,1000,surrealAnimation2, ""));
