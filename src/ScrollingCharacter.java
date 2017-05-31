@@ -133,20 +133,23 @@ public class ScrollingCharacter extends Character{
 				}
 			}
 			if(s.getTag().toUpperCase().contains("<DAMAGING>")){
-				if(collidesWith(s) && !immune){
-					health -= s.getDamage();
-					immune = true;
-					immuneStart = System.currentTimeMillis();
-				}
 				try{
 					((Enemy)s).checkCollisionAndDoStuff(allObjects);
-					if(s.sideCollision(this).equals("TOP") && getYSpeed() > 0){
-						health += s.getDamage();
-						immune = false;
-						immuneStart -= immuneTime;
-						i.remove();
-					}
 				}catch(ClassCastException e){}
+				if(collidesWith(s)){
+					boolean canDamage = true;
+					try{
+						if(((Enemy)s).sideCollision(this).equals("TOP") && getYSpeed() > 0){
+							canDamage = false;
+							i.remove();
+						}
+					}catch(ClassCastException e){}
+					if(canDamage && !immune){
+						health -= s.getDamage();
+						immune = true;
+						immuneStart = System.currentTimeMillis();
+					}
+				}
 			}
 		}
 		if(updateX){
