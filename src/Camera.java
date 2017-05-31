@@ -65,6 +65,7 @@ public class Camera extends PApplet {
 		shootingStars = minim.loadFile("Bag Raiders - Shooting Stars.mp3");
 		earRape = minim.loadFile("Smash Mouth - Allstar (Earrape).mp3");
 		fontSize = 60;
+		allStar.play();
 	}
 	public void draw(){
 		if(shrek.getHealth()>0){
@@ -161,8 +162,11 @@ public class Camera extends PApplet {
 		if(!w && !a && !s && !d){
 			shrek.setAnimation(0);
 		}
-		allStar.play();
 		shrek.scrollerUpdate(allShapes);
+		if (allStar.position() == allStar.length()){
+			allStar.rewind();
+			allStar.play();
+		}
 	
 	}
 	
@@ -211,7 +215,7 @@ public class Camera extends PApplet {
 		allShapes.add(new Rectangle(levelLength, -height, width, height*2, Color.darkGray, "<WALL>"));
 		allShapes.add(new Rectangle(0, -10, levelLength, 10, Color.darkGray, "<WALL>"));
 
-		allShapes.add(new Rectangle(0, height - 25, 600, 25, Color.green, "<WALL>,<end>"));//starting plat
+		allShapes.add(new Rectangle(0, height - 25, 600, 25, Color.green, "<WALL>"));//starting plat
 		allShapes.add(new Image(600, height - 20, 200, 20, loadImage("lava.jpg"), "<DAMAGING>"));//first lava
 		allShapes.add(new Rectangle(800, height - 25, 300, 25, Color.green, "<WALL>"));//second plat
 		allShapes.add(new Image(1100, height - 20, 350, 20, loadImage("lava.jpg"), "<DAMAGING>"));//second lava

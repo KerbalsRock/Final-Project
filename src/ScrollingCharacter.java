@@ -140,7 +140,7 @@ public class ScrollingCharacter extends Character{
 				}
 				try{
 					((Enemy)s).checkCollisionAndDoStuff(allObjects);
-					if(s.sideCollision(this).equals("TOP") && getYSpeed() >= 0){
+					if(s.sideCollision(this).equals("TOP") && getYSpeed() > 0){
 						health += s.getDamage();
 						immune = false;
 						immuneStart -= immuneTime;
