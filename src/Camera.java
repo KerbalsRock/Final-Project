@@ -30,7 +30,9 @@ public class Camera extends PApplet {
 	private boolean s;
 	private boolean space;
 	private Minim minim;
-	private AudioPlayer player;
+	private AudioPlayer allStar;
+	private AudioPlayer shootingStars;
+	private AudioPlayer earRape;
 	public static void main(String[] args) {
 		PApplet.main("Camera");
 	}
@@ -53,20 +55,49 @@ public class Camera extends PApplet {
 		shrek = new ScrollingCharacter(width/4,height -100, 1, 1, 0, 0, .25, shrekAnimations, "<ENEMYBOUND>");
 		shrekHealth = new HealthBar(width-300, 0, 300, 50, shrek.getHealth());
 		minim = new Minim(this);
-		player = minim.loadFile("Bag Raiders - Shooting Stars.mp3");
+		allStar = minim.loadFile("All Star - Smash Mouth [Lyrics].mp3");
+		shootingStars = minim.loadFile("Bag Raiders - Shooting Stars.mp3");
+		earRape = minim.loadFile("Smash Mouth - Allstar (Earrape).mp3");
 	}
 	public void draw(){
-		update();
-        g.beginDraw();
-        g.noStroke();
-        g.background(background);
-        for(BasicShape s : allShapes){
-        	s.draw(g);
-        }
-        shrekHealth.draw(g);
-        shrek.draw(g);
-		g.endDraw();
-		image(g, 0, 0);
+		if(shrek.getHealth()>0){
+			update();
+	        g.beginDraw();
+	        g.noStroke();
+	        g.background(background);
+	        for(BasicShape s : allShapes){
+	        	s.draw(g);
+	        }
+	        shrekHealth.draw(g);
+	        shrek.draw(g);
+			g.endDraw();
+			image(g, 0, 0);
+		}
+		else if(shrek.levelCompleted){
+			background(Color.blue.getRGB());
+			if(allStar.isPlaying()){
+				allStar.pause();
+				shootingStars.cue(23500);
+			}
+			shootingStars.play();
+			if(shootingStars.mix.level()>.35){
+				background(Color.green.getRGB());
+			}
+			textSize(69);
+			textAlign(CENTER,CENTER);
+			text("You Win!", width/2, height/2);
+		}
+		else{
+			background(Color.red.getRGB());
+			if(allStar.isPlaying()){
+				allStar.pause();
+				earRape.cue(allStar.position());
+			}
+			earRape.play();
+			textSize(69);
+			textAlign(CENTER,CENTER);
+			text("You Lose", width/2, height/2);
+		}
 	}
 	
 	private void update(){
@@ -76,8 +107,8 @@ public class Camera extends PApplet {
 		}else{
 			nogenders.setAnimation(0);
 		}
-		if(player.position()>=player.length()){
-			player.rewind();
+		if(allStar.position()>=allStar.length()){
+			allStar.rewind();
 		}
 		if(a){
 			shrek.setXSpeed(-5);
@@ -92,8 +123,6 @@ public class Camera extends PApplet {
 				shrek.setAnimation(3);
 			}else{
 				shrek.setAnimation(2);
-			}if(!player.isPlaying()){
-				player.play();
 			}
 		}else{
 			shrek.setXSpeed(0);
@@ -119,6 +148,7 @@ public class Camera extends PApplet {
 		if(!w && !a && !s && !d){
 			shrek.setAnimation(0);
 		}
+		allStar.play();
 		shrek.scrollerUpdate(allShapes);
 	
 	}
@@ -173,7 +203,7 @@ public class Camera extends PApplet {
 		allShapes.add(new Rectangle(500, height - 100, 720, 10, Color.orange, "<WALL>"));
 		allShapes.add(new Rectangle(1220, -height, 20, height*2 - 90, Color.orange, "<WALL>"));
 		allShapes.add(new Rectangle(1300, 100,10, height - 110  , Color.orange, "<WALL><ENEMYBOUND>"));
-		allShapes.add(new Rectangle(1890, 100,10, height - 110  , Color.orange, "<WALL><ENEMYBOUND>"));
+		allShapes.add(new Rectangle(1890, 100,10, height - 110  , Color.orange, "<WALL><ENEMYBOUND><END>"));
 		allShapes.add(new Rectangle(500, height - 300, 720, 10, Color.orange, "<WALL>"));
 		allShapes.add(new Rectangle(270, height - 600, 850, 10, Color.orange, "<WALL>"));
 		

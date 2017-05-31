@@ -10,6 +10,7 @@ public class ScrollingCharacter extends Character{
 	int immuneTime;
 	int health;
 	int originalX;
+	boolean levelCompleted;
 	public ScrollingCharacter(int xPos, int yPos, double xScale, double yScale, double xSpeed, double ySpeed,
 			double gravity, ArrayList<Animation> list, String tag) {
 		super(xPos, yPos, xScale, yScale, xSpeed, ySpeed, list, tag);
@@ -23,6 +24,7 @@ public class ScrollingCharacter extends Character{
 		immuneTime = 1000;
 		immuneStart = System.currentTimeMillis()-immuneTime;
 		originalX = xPos;
+		levelCompleted = false;
 	}
 	
 	public void update(){
@@ -118,6 +120,12 @@ public class ScrollingCharacter extends Character{
 				if(collidesWith(s)){
 					setYSpeed(0);
 					canClimb = true;
+				}
+			}
+			if(s.getTag().toUpperCase().contains("<END>")){
+				if(collidesWith(s)){
+					health = 0;
+					levelCompleted = true;
 				}
 			}
 			if(s.getTag().toUpperCase().contains("<DAMAGING>")){
